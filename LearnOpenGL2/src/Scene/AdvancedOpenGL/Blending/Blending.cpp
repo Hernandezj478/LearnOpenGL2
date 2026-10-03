@@ -113,6 +113,7 @@ void Blending::Render()
 	//Ground
 	model = glm::mat4(1.0);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(static_cast<float>(m_GroundSize)));
 	m_Shader->Bind();
 	m_Shader->SetUniformMat4f("model", model);
@@ -128,14 +129,14 @@ void Blending::Render()
 		//Plane 1
 		model = glm::mat4(1.0);
 		model = glm::translate(model, m_GrassPositions[i]);
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("model", model);
 		m_Shader->SetUniform1f("UV", 1.0f);
 		m_GrassTexture->Bind();
 		m_Plane->Draw(*m_Shader, m_Context.Renderer);
 		//Plane 2
-		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		m_Shader->Bind();
 		m_Shader->SetUniformMat4f("model", model);
 		m_GrassTexture->Bind();
