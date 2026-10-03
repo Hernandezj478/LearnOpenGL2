@@ -26,14 +26,14 @@ void Plane::GenerateVertices()
 		{ 1.0f, 0.0f, -1.0f}
 	};
 
-	const glm::vec3 faceNormals ={0.0f, 1.0f, 0.0f,};
+	const glm::vec3 faceNormals ={0.0f, -1.0f, 0.0f,};
 
 	const glm::vec2 texCoords[] =
 	{
-		{0.0f, 0.0f},
-		{1.0f, 0.0f},
 		{1.0f, 1.0f},
-		{0.0f, 1.0f}
+		{0.0f, 1.0f},
+		{0.0f, 0.0f},
+		{1.0f, 0.0f}
 	};
 
 	const int triIndices[2][3] =
@@ -43,20 +43,21 @@ void Plane::GenerateVertices()
 	};
 
 	const glm::vec3 edge1 = basePoints[1] - basePoints[0];
-	const glm::vec3 edge2 = basePoints[2] - basePoints[0];
+	const glm::vec3 edge2 = basePoints[3] - basePoints[0];
 	const glm::vec2 deltaUV1 = texCoords[1] - texCoords[0];
-	const glm::vec2 deltaUV2 = texCoords[2] - texCoords[0];
+	const glm::vec2 deltaUV2 = texCoords[3] - texCoords[0];
 
 	const float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-	const glm::vec3 tangent = f * (deltaUV2.y * edge1 - deltaUV1.y * edge2);
-	const glm::vec3 bitangent = f * (-deltaUV2.x * edge1 + deltaUV1.x * edge2);
+
+	const glm::vec3 tangent		= f * ( deltaUV2.y * edge1 - deltaUV1.y * edge2);
+	const glm::vec3 bitangent	= f * (-deltaUV2.x * edge1 + deltaUV1.x * edge2);
 
 	Vertex vertex;
 	for (int i = 0; i < 4; i++)
 	{
 		vertex.Position = basePoints[i];
-		vertex.Normal = faceNormals;
 		vertex.TexCoord = texCoords[i];
+		vertex.Normal = faceNormals;
 		vertex.Tangent = tangent;
 		vertex.Bitangent = bitangent;
 		Vertices.push_back(vertex);
