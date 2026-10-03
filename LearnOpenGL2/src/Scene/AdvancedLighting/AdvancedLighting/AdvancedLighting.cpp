@@ -48,7 +48,6 @@ void AdvancedLighting::Render()
 	m_Shader->Bind();
 	m_Shader->SetUniformMat4f("projection", projection);
 	m_Shader->SetUniformMat4f("view", view);
-	m_Shader->SetUniformMat4f("model", model);
 	m_Shader->SetUniformVec3("viewPos", m_Camera.GetPosition());
 	m_Shader->SetUniform1i("bBlinnPhong", bBlinnPhong);
 	m_Shader->SetUniform1i("lightType", m_LightSelection);
@@ -63,6 +62,8 @@ void AdvancedLighting::Render()
 		break;
 	}
 	m_FloorTexture->Bind();
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	m_Shader->SetUniformMat4f("model", model);
 	m_Floor->Draw(*m_Shader, m_Context.Renderer);
 
 	m_Light->Draw(m_Context.Renderer, view, projection, m_LightPosition, WHITE, 1.0f, 0.05f);
