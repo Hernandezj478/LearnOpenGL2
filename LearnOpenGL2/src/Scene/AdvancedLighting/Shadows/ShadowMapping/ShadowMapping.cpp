@@ -94,6 +94,7 @@ void ShadowMapping::Render()
 	//Floor
 	glm::mat4 model = glm::mat4(1.0);
 	model = glm::translate(model, glm::vec3(0.0f, -0.25f, 0.0f));
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(25.0f));
 	m_DepthShader->SetUniformMat4f("model", model);
 	m_Floor->Draw(*m_DepthShader, m_Context.Renderer);
@@ -135,6 +136,7 @@ void ShadowMapping::Render()
 	//Floor
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, -0.25f, 0.0f));
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(25.0f));
 	m_Shader->SetUniformMat4f("model", model);
 	m_Shader->SetUniform1f("uvScale", 10.0f);
