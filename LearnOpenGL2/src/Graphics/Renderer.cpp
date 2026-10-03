@@ -13,7 +13,7 @@ void Renderer::Clear(glm::vec4 cColor, ClearBuffer clearState) const
 	GLCall(glClear(clearState));
 }
 
-void Renderer::ClearBufferBits(ClearBuffer clearState)
+void Renderer::ClearBufferBits(ClearBuffer clearState) const
 {
 	GLCall(glClear(clearState));
 }

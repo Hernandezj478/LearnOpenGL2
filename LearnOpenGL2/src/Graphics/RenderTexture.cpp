@@ -143,7 +143,6 @@ void RenderTexture::CreteDepthStencilbuffer(int screenWidth, int screenHeight)
 
 void RenderTexture::CreateBorder(glm::vec4 color)
 {
-	// Only use if texture has been properly created Texture(<params...>)
 	Bind();
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, &color[0]);
 }

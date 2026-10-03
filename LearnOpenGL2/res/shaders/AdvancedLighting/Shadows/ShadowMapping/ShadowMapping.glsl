@@ -19,10 +19,9 @@ uniform mat4 lightSpaceMatrix;
 
 void main()
 {
-	vec4 worldPos = model * vec4(aPos, 1.0);
-	vs_out.FragPos = worldPos.xyz;
+	vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
 	vs_out.TexCoords = aTexCoords;
-	vs_out.Normal = normalize(transpose(inverse(mat3(model))) * aNormal);
+	vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
 	vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 	gl_Position = projection * view * vec4(vs_out.FragPos, 1.0);
 }
@@ -38,7 +37,7 @@ in VS_OUT
 	vec3 Normal;
 	vec4 FragPosLightSpace;
 }fs_in;
-
+uniform float uvScale;
 uniform sampler2D diffuseTexture;
 uniform sampler2D shadowMap;
 
@@ -52,7 +51,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 	float closestDepth = texture(shadowMap, projCoords.xy).r;
 	float currentDepth = projCoords.z;
 	vec3 lightDir = normalize(lightPos - fs_in.FragPos);
-	float bias = max(0.0005 * (1.0 - dot(fs_in.Normal, lightDir)),0.0005f);
+	float bias = max(0.005 * (1.0 - dot(fs_in.Normal, lightDir)),0.005f);
 	float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
 	for(int x = -1; x <= 1; ++x)
@@ -63,12 +62,16 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 			shadow += currentDepth - bias > pfcDepth ? 1.0 : 0.0;
 		}
 	}
+	if(projCoords.z > 1.0)
+	{
+		shadow = 0.0;
+	}
 	return shadow /= 9.0;
 }
 
 void main()
 {
-	vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;
+	vec3 color = texture(diffuseTexture, fs_in.TexCoords * uvScale).rgb;
 	vec3 normal = normalize(fs_in.Normal);
 	vec3 lightColor = vec3(1.0);
 	//ambient

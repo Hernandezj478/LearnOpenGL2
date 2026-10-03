@@ -28,6 +28,8 @@
 
 #include "AdvancedLighting/AdvancedLighting/AdvancedLighting.h"
 #include "AdvancedLighting/GammaCorrection/GammaCorrection.h"
+#include "AdvancedLighting/Shadows/ShadowMapping/ShadowMapping.h"
+#include "AdvancedLighting/Shadows/PointShadow/PointShadow.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -52,4 +54,6 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<AntiAliasing>("Advanced OpenGL", "AntiAliasing", "");
 	Registry.Register<AdvancedLighting>("Advanced Lighting", "Advanced Lighting", "Blinn-Phong lighting");
 	Registry.Register<GammaCorrection>("Advanced Lighting", "Gamma Correction", "");
+	Registry.Register<ShadowMapping>("Advanced Lighting", "Shadow Mapping", "");
+	Registry.Register<PointShadow>("Advanced Lighting", "Point Shadow", "");
 }

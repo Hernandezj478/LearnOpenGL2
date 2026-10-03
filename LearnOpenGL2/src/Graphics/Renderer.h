@@ -28,7 +28,7 @@ enum ClearBuffer
 class Renderer {
 public:
 	void Clear(glm::vec4 cColor, ClearBuffer clearState = COLOR) const;
-	void ClearBufferBits(ClearBuffer clearState);
+	void ClearBufferBits(ClearBuffer clearState) const;
 	/*
 	*! @brief Draw object to the screen
 	* @param in vertexArray - VAO of object
