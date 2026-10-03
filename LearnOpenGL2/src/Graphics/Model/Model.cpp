@@ -153,6 +153,21 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, const glm::mat4& nod
 			vector.z = mesh->mNormals[i].z;
 			vertex.Normal = glm::normalize( normalMatrix * vector);
 		}
+		if (mesh->HasTangentsAndBitangents())
+		{
+			vector = glm::vec3(1.0);
+			vector.x = mesh->mTangents[i].x;
+			vector.y = mesh->mTangents[i].y;
+			vector.z = mesh->mTangents[i].z;
+			vertex.Tangent = vector;
+
+			vector = glm::vec3(1.0);
+			vector.x = mesh->mBitangents[i].x;
+			vector.y = mesh->mBitangents[i].y;
+			vector.z = mesh->mBitangents[i].z;
+			vertex.Bitangent = vector;
+		}
+
 
 		vertices.push_back(vertex);
 
