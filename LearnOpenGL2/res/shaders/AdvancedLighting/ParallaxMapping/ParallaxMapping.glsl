@@ -55,7 +55,7 @@ uniform sampler2D albedoMap;
 uniform sampler2D normalMap;
 uniform sampler2D heightMap;
 
-uniform float height_scale;
+float height_scale = 0.1;
 
 vec2 ParallaxMapping(vec2 texCoord, vec3 viewDir);
 
@@ -103,18 +103,18 @@ vec2 ParallaxMapping(vec2 texCoord, vec3 viewDir)
 	vec2 deltaTexCoord = P / numLayers;
 
 	vec2 currentTexCoord = texCoord;
-	float currentHeightMapValue = texture(heightMap, currentTexCoord).r;
+	float currentHeightMapValue = 1.0 - texture(heightMap, currentTexCoord).r;
 
 	while(currentLayerHeight < currentHeightMapValue)
 	{
 		currentTexCoord -= deltaTexCoord;
-		currentHeightMapValue = texture(heightMap, currentTexCoord).r;
+		currentHeightMapValue = 1.0 - texture(heightMap, currentTexCoord).r;
 		currentLayerHeight += layerHeight;
 	}
 
 	vec2 prevTexCoord = currentTexCoord + deltaTexCoord;
 	float afterHeight = currentHeightMapValue - currentLayerHeight;
-	float beforeHeight = texture(heightMap, prevTexCoord).r - currentLayerHeight + layerHeight;
+	float beforeHeight = (1.0 - texture(heightMap, prevTexCoord).r) - currentLayerHeight + layerHeight;
 
 	float weight = afterHeight / (afterHeight - beforeHeight);
 	vec2 finalTexCoord = prevTexCoord * weight + currentTexCoord * (1.0 - weight);

@@ -16,7 +16,6 @@ public:
 	~ParallaxMapping() = default;
 
 	void Render() override;
-	void OnGui() override;
 private:
 	std::unique_ptr<Shader> m_Shader;
 	std::unique_ptr<Texture> m_WallAlbedo;
@@ -32,5 +31,4 @@ private:
 	std::unique_ptr<LightMarker> m_Light;
 
 	glm::vec3 m_LightPosition;
-	float m_HeightScale = 0.1f;
 };
