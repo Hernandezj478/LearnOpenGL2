@@ -62,7 +62,6 @@ void ParallaxMapping::Render()
 	m_Shader->SetUniformMat4f("view", view);
 	m_Shader->SetUniformVec3("lightPos", m_LightPosition);
 	m_Shader->SetUniformVec3("viewPos", m_Camera.GetPosition());
-	m_Shader->SetUniform1f("uvScale", 10.0f);
 	m_WallAlbedo->Bind(0);
 	m_WallNormal->Bind(1);
 	m_WallHeight->Bind(2);
@@ -78,10 +77,8 @@ void ParallaxMapping::Render()
 	model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	m_Shader->SetUniform1f("uvScale", 1.0f);
 	m_Shader->SetUniformMat4f("model", model);
 	m_Plane->Draw(*m_Shader, m_Context.Renderer);
 
 	m_Light->Draw(m_Context.Renderer, view, projection, m_LightPosition, WHITE);
 }
-
