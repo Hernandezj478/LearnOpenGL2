@@ -1,145 +1,99 @@
 #include "ParallaxMapping.h"
 
-#include "../ColorPalette.h"
-#include "../Renderer.h"
-#include "../Plane.h"
-#include "../Texture.h"
+#include "Graphics/ColorPalette.h"
+#include "Graphics/LightMarker.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Shapes/Plane.h"
+#include "Scene/SceneContext.h"
+#include <imgui/imgui.h>
 
-#define SHADOW_WIDTH  1024
-#define SHADOW_HEIGHT 1024
-
-ParallaxMapping::ParallaxMapping(int width, int height)
-{
-	camera.SetScreenSize(width, height);
-	camera.SetCursorPos();	// Must only be called after setting screen size
-	camera.SetAspectRatio();
-}
-
-void ParallaxMapping::Run(GLFWwindow* window)
+ParallaxMapping::ParallaxMapping(const SceneContext& context) : Scene3D(context)
 {
 	glEnable(GL_DEPTH_TEST);
-	PlaneTBN plane;
-	PlaneTBN toyPlane;
-	std::vector<glm::vec3> planePos =
-	{
-		glm::vec3(-1.5f, 0.0f, 0.0f),
-		glm::vec3(1.5f, 0.0f, 0.0f)
-	};
+	m_Plane = std::make_unique<Plane>();
 
-	Shader shader("res/shaders/ParallaxMapping.shader");
+	m_Shader = std::make_unique<Shader>("res/shaders/AdvancedLighting/ParallaxMapping/ParallaxMapping.glsl");
 
-	Texture wallTexture("res/textures/bricks2.jpg", true);
-	Texture wallNormal("res/textures/bricks2_normal.jpg", true, true);
-	Texture wallHeight("res/textures/bricks2_disp.jpg", true);
+	m_WallAlbedo = std::make_unique<Texture>("res/textures/bricks2.jpg");
+	m_WallNormal = std::make_unique<Texture>("res/textures/bricks2_normal.jpg");
+	m_WallHeight = std::make_unique<Texture>("res/textures/bricks2_disp.jpg");
 
-	Texture toyTexture("res/textures/wood.png", true);
-	Texture toyNormal("res/textures/toy_box_normal.png", true, true);
-	Texture toyHeight("res/textures/toy_box_disp.png", true);
+	m_ToyAlbedo = std::make_unique<Texture>("res/textures/wood.png");
+	m_ToyNormal = std::make_unique<Texture>("res/textures/toy_box_normal.png");
+	m_ToyHeight = std::make_unique<Texture>("res/textures/toy_box_disp.png");
 
+	m_WallAlbedo->SyncTexture();
+	// We need to invert the g channel to align with what OpenGL expects
+	m_WallNormal->LoadPixels();
+	m_WallNormal->InvertGChannel();
+	m_WallNormal->Upload();
+	m_WallHeight->SyncTexture();
 
-	shader.Bind();
-	shader.SetUniform1i("diffuseMap", 0);
-	shader.SetUniform1i("normalMap", 1);
-	shader.SetUniform1i("depthMap", 2);
-	shader.SetUniform1f("height_scale", 0.1);
+	m_ToyAlbedo->SyncTexture();
+	m_ToyNormal->LoadPixels();
+	m_ToyNormal->InvertGChannel();
+	m_ToyNormal->Upload();
+	m_ToyHeight->SyncTexture();
 
-	glm::vec3 lightPos(0.5f, 1.0f, 0.3f);
+	m_Shader->Bind();
+	m_Shader->SetUniform1i("albedoMap", 0);
+	m_Shader->SetUniform1i("normalMap", 1);
+	m_Shader->SetUniform1i("heightMap", 2);
+	
 
-	while (!glfwWindowShouldClose(window))
-	{
+	m_LightPosition = glm::vec3(0.5f, 1.0f, 0.3f);
 
-		float currentFrame = (float)glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
-		Renderer renderer;
-		ProcessMovement(window);
-		renderer.Clear(DARK_GREY, COLOR_DEPTH);
-
-		// Render Here
-		glm::mat4 projection = glm::perspective(glm::radians(camera.GetFOV()), camera.GetAspectRatio(), 0.1f, 100.0f);
-		glm::mat4 view = camera.GetViewMatrix();
-		glm::mat4 model = glm::mat4(1.0);
-
-
-		shader.Bind();
-		shader.SetUniform1i("normalToggle", bNormal);
-		shader.SetUniform1i("parallaxToggle", bParallax);
-		shader.SetUniformMat4f("projection", projection);
-		shader.SetUniformMat4f("view", view);
-		// set lighting uniforms
-		shader.SetUniformVec3("lightPos", lightPos);
-		shader.SetUniformVec3("viewPos", camera.GetPosition());
-		wallTexture.Bind(0);
-		wallNormal.Bind(1);
-		wallHeight.Bind(2);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, planePos[0]);
-		//model = glm::rotate(model, glm::radians((float)glfwGetTime() * -10.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // rotate the quad to show parallax mapping from multiple directions
-		shader.SetUniformMat4f("model", model);
-		plane.Draw(shader, renderer);
-		
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, planePos[1]);
-		shader.SetUniformMat4f("model", model);
-		toyTexture.Bind(0);
-		toyNormal.Bind(1);
-		toyHeight.Bind(2);
-		toyPlane.Draw(shader, renderer);
-		
-		
-		shader.Unbind();
-
-
-
-		// Check and call events and swap buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
+	m_Light = std::make_unique<LightMarker>();
 }
 
-void ParallaxMapping::ProcessInput(GLFWwindow* window, int key, int action)
+void ParallaxMapping::Render()
 {
-	Scene::ProcessInput(window, key, action);
+	m_Context.Renderer.Clear(DARK_GREY, COLOR_DEPTH);
 
-	switch (key)
+	// Render Here
+	glm::mat4 projection = glm::perspective(glm::radians(m_Camera.GetFOV()), m_Camera.GetAspectRatio(), 0.1f, 100.0f);
+	glm::mat4 view = m_Camera.GetViewMatrix();
+	glm::mat4 model = glm::mat4(1.0);
+
+
+	m_Shader->Bind();
+	//m_Shader->SetUniform1i("normalToggle", bNormal);
+	//m_Shader->SetUniform1i("parallaxToggle", bParallax);
+	m_Shader->SetUniformMat4f("projection", projection);
+	m_Shader->SetUniformMat4f("view", view);
+	m_Shader->SetUniformVec3("lightPos", m_LightPosition);
+	m_Shader->SetUniformVec3("viewPos", m_Camera.GetPosition());
+	m_Shader->SetUniform1f("height_scale", m_HeightScale);
+	
+	m_WallAlbedo->Bind(0);
+	m_WallNormal->Bind(1);
+	m_WallHeight->Bind(2);
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(-1.5, 0.0, 0.0));
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	m_Shader->SetUniformMat4f("model", model);
+	m_Plane->Draw(*m_Shader, m_Context.Renderer);
+
+	m_ToyAlbedo->Bind(0);
+	m_ToyNormal->Bind(1);
+	m_ToyHeight->Bind(2);
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	m_Shader->SetUniformMat4f("model", model);
+	m_Plane->Draw(*m_Shader, m_Context.Renderer);
+
+	m_Light->Draw(m_Context.Renderer, view, projection, m_LightPosition, WHITE);
+}
+
+void ParallaxMapping::OnGui()
+{
+	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
+	if (ImGui::Begin("Parallax Mapping", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
 	{
-		case GLFW_KEY_F1:
-		{
-			switch (action)
-			{
-				case GLFW_PRESS:
-				{
-					// Toggle normal maping on/off
-					bNormal = !bNormal;
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		case GLFW_KEY_F2:
-		{
-			switch (action)
-			{
-				case GLFW_PRESS:
-				{
-					// Toggle Parallax Mapping on/off
-					bParallax = !bParallax;
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		default:
-			// No Action
-			break;
+		ImGui::SliderFloat("Height Scale", &m_HeightScale, 0.1f, 1.0f);
 	}
+	ImGui::End();
 }

@@ -30,6 +30,8 @@
 #include "AdvancedLighting/GammaCorrection/GammaCorrection.h"
 #include "AdvancedLighting/Shadows/ShadowMapping/ShadowMapping.h"
 #include "AdvancedLighting/Shadows/PointShadow/PointShadow.h"
+#include "AdvancedLighting/NormalMapping/NormalMapping.h"
+#include "AdvancedLighting/ParallaxMapping/ParallaxMapping.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -56,4 +58,6 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<GammaCorrection>("Advanced Lighting", "Gamma Correction", "");
 	Registry.Register<ShadowMapping>("Advanced Lighting", "Shadow Mapping", "");
 	Registry.Register<PointShadow>("Advanced Lighting", "Point Shadow", "");
+	Registry.Register<NormalMapping>("Advanced Lighting", "Normal Mapping", "");
+	Registry.Register<ParallaxMapping>("Advanced Lighting", "Parallax Mapping", "");
 }
