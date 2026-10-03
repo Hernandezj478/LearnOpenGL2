@@ -17,12 +17,11 @@ uniform mat4 model;
 
 void main()
 {
-    vec4 worldPos = model * vec4(aPos, 1.0);
-	vs_out.FragPos = worldPos.xyz;
+	vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
 
 	vs_out.TexCoords = aTexCoords;
-	vs_out.Normal = mat3(transpose(inverse(model))) * aNormals;
-	gl_Position = projection * view * worldPos;
+	vs_out.Normal = transpose(inverse(mat3(model))) * aNormals;
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
 
 #shader fragment

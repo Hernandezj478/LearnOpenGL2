@@ -53,6 +53,7 @@ void GammaCorrection::Render()
 	m_Shader->SetUniformMat4f("projection", projection);
 	m_Shader->SetUniformMat4f("view", view);
 	model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0, 0.0, 0.0));
 	model = glm::scale(model, glm::vec3(10.0f));
 	m_Shader->SetUniformMat4f("model", model);
 
