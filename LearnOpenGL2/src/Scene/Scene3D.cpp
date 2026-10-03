@@ -29,6 +29,11 @@ void Scene3D::UpdateCamera()
 	{
 		m_Camera.ToggleFPS();
 	}
+
+	if (input.IsDown(GLFW_KEY_KP_ADD)) m_Camera.AdjustFOV(IN);
+	if (input.IsDown(GLFW_KEY_KP_SUBTRACT)) m_Camera.AdjustFOV(OUT);
+	if (input.IsDown(GLFW_KEY_KP_ENTER)) m_Camera.AdjustFOV(RESET);
+
 	if (!input.IsCursorCaptured())
 	{
 		return;
@@ -39,10 +44,6 @@ void Scene3D::UpdateCamera()
 	if (input.IsDown(GLFW_KEY_D)) m_Camera.CameraMovement(RIGHT, DeltaTime);
 	if (input.IsDown(GLFW_KEY_Q)) m_Camera.CameraMovement(DOWN, DeltaTime);
 	if (input.IsDown(GLFW_KEY_E)) m_Camera.CameraMovement(UP, DeltaTime);
-
-	if (input.IsDown(GLFW_KEY_KP_ADD)) m_Camera.AdjustFOV(IN);
-	if (input.IsDown(GLFW_KEY_KP_SUBTRACT)) m_Camera.AdjustFOV(OUT);
-	if (input.IsDown(GLFW_KEY_KP_ENTER)) m_Camera.AdjustFOV(RESET);
 
 	const glm::vec2 look = input.MouseDelta();
 	m_Camera.PocessMouseMovement(look.x, look.y);
