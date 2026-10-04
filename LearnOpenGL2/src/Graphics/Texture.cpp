@@ -32,7 +32,6 @@ void Texture::LoadPixels()
 			throw std::runtime_error(stream.str());
 			return;
 		}
-		
 		return;
 	}
 
@@ -53,7 +52,6 @@ void Texture::LoadPixels()
 	{
 		InvertGChannel();
 	}
-	
 }
 
 void Texture::Upload()
@@ -62,7 +60,22 @@ void Texture::Upload()
 	glBindTexture(GL_TEXTURE_2D, m_RendererID);
 	if (m_HDR)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, m_Width, m_Height, 0, GL_RGB, GL_FLOAT, m_HDRBuffer);
+		GLenum internalFormat, dataFormat;
+		switch (m_nrChannels)
+		{
+		case 3:
+			internalFormat = GL_RGB16F;
+			dataFormat = GL_RGB;
+			break;
+		case 4:
+			internalFormat = GL_RGBA16F;
+			dataFormat = GL_RGBA;
+			break;
+		default:
+			internalFormat = GL_RGB16F;
+			dataFormat = GL_RGB;
+		}
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_FLOAT, m_HDRBuffer);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

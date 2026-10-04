@@ -1,13 +1,13 @@
 #shader vertex
 #version 330 core
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoords;
+layout (location = 1) in vec2 aTexCoord;
 layout (location = 2) in vec3 aNormal;
 
 out VS_OUT
 {
 	vec3 FragPos;
-	vec2 TexCoords;
+	vec2 TexCoord;
 	vec3 Normal;
 } vs_out;
 
@@ -15,18 +15,14 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform bool inverse_normals;
-
 void main()
 {
 	vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
-	vs_out.TexCoords = aTexCoords;
-	vec3 n = inverse_normals ? -aNormal : aNormal;
-	mat3 normalMatrix = transpose(inverse(mat3(model)));
-	vs_out.Normal = normalize(normalMatrix * n);
-
+	vs_out.TexCoord = aTexCoord;
+	vs_out.Normal = normalize(transpose(inverse(mat3(model))) * -aNormal);
 	gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
+
 #shader fragment
 #version 330 core
 out vec4 FragColor;
@@ -34,7 +30,7 @@ out vec4 FragColor;
 in VS_OUT
 {
 	vec3 FragPos;
-	vec2 TexCoords;
+	vec2 TexCoord;
 	vec3 Normal;
 } fs_in;
 
@@ -47,10 +43,11 @@ struct Light
 uniform Light lights[16];
 uniform sampler2D diffuseTexture;
 uniform vec3 viewPos;
+uniform int size;
 
 void main()
 {
-	vec3 color = texture(diffuseTexture, fs_in.TexCoords).rgb;
+	vec3 color = texture(diffuseTexture, fs_in.TexCoord).rgb;
 	vec3 normal = normalize(fs_in.Normal);
 	vec3 ambient = 0.0 * color;
 	vec3 lighting = vec3(0.0);

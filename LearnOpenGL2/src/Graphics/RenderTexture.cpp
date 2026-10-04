@@ -25,7 +25,7 @@ void RenderTexture::CreateColorBufferMSAA(int screenWidth, int screenHeight, int
 }
 
 void RenderTexture::CreateColorbufferHDR(int screenWidth, int screenHeight, GLint internalFormat, WrapType uvWrap, GLenum filter)
-{
+{ 
 	m_Width = screenWidth;
 	m_Height = screenHeight;
 	m_Target = TextureTarget::Texture2D;
@@ -151,12 +151,11 @@ void RenderTexture::Bind(unsigned int slot, unsigned int index) const
 {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	// Lets make sure the index is in bounds of the array
-	if (index < m_BufferCount)
+	if (index >= m_BufferCount)
 	{
-		glBindTexture(GetTarget(), m_RendererID[index]);
-		return;
+		throw std::runtime_error("Array out of bounds");
 	}
-	throw std::runtime_error("Array out of bounds");
+	glBindTexture(GetTarget(), m_RendererID[index]);
 }
 
 void RenderTexture::Unbind() const

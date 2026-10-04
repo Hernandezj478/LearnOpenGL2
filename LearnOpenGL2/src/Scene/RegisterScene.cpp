@@ -32,6 +32,7 @@
 #include "AdvancedLighting/Shadows/PointShadow/PointShadow.h"
 #include "AdvancedLighting/NormalMapping/NormalMapping.h"
 #include "AdvancedLighting/ParallaxMapping/ParallaxMapping.h"
+#include "AdvancedLighting/HDR/HDR.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -60,4 +61,5 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<PointShadow>("Advanced Lighting", "Point Shadow", "");
 	Registry.Register<NormalMapping>("Advanced Lighting", "Normal Mapping", "");
 	Registry.Register<ParallaxMapping>("Advanced Lighting", "Parallax Mapping", "");
+	Registry.Register<HDR>("Advanced Lighting", "HDR", "");
 }
