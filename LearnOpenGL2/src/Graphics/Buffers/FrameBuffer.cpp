@@ -136,9 +136,16 @@ void FrameBuffer::CreateAndAttachMRTColorBuffer(RenderTexture& color, int width,
 //------------------------------------------------------------------------------------------------------------
 
 
-void FrameBuffer::ConfigureAttachments(unsigned int* attachments, unsigned int count)
+void FrameBuffer::ConfigureColorAttachments(const RenderTexture& renderTexture)
 {
+	unsigned int count = renderTexture.GetBufferCount();
+	unsigned int* attachments = new unsigned int[count];
+	for (int i = 0; i < count; i++)
+	{
+		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+	}
 	glDrawBuffers(count, attachments);
+	delete[] attachments;
 }
 
 bool FrameBuffer::FrameBufferComplete()

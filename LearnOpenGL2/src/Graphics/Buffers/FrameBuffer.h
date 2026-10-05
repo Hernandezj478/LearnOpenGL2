@@ -34,7 +34,7 @@ public:
 	void CreateAndAttachMRT(RenderTexture& color, int width, int height, GLenum internalFormat);
 	void CreateAndAttachMRTColorBuffer(RenderTexture& color, int width, int height);
 
-	void ConfigureAttachments(unsigned int* attachments, unsigned int count);
+	void ConfigureColorAttachments(const RenderTexture& renderTexture);
 
 	bool FrameBufferComplete();
 

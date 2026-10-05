@@ -1,392 +1,189 @@
 #include "Bloom.h"
 
-
-#include "../ColorPalette.h"
-#include "../Renderer.h"
-#include "../Texture.h"
-#include "../FrameBuffer.h"
-#include "../Plane.h"
-#include "../Shader.h"
-#include "../Cube.h"
-
-// ImGUI includes
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include "Graphics/ColorPalette.h"
+#include "Graphics/LightMarker.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/Texture.h"
+#include "Graphics/RenderTexture.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Buffers/RenderBuffer.h"
+#include "Graphics/Buffers/FrameBuffer.h"
+#include "Graphics/Shapes/Cube.h"
+#include "Graphics/Shapes/Plane.h"
+#include "Scene/SceneContext.h"
 
 
+#include <imgui/imgui.h>
 
-Bloom::Bloom(int screenWidth, int screenHeight)
+Bloom::Bloom(const SceneContext& context) : Scene3D(context)
 {
-	camera.SetScreenSize(screenWidth, screenHeight);
-	camera.SetCursorPos();
-	camera.SetAspectRatio();
-}
-
-void Bloom::Run(GLFWwindow* window)
-{
-	// Initialize ImGUI
-	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui::StyleColorsDark();
-	ImGui_ImplOpenGL3_Init("#version 150");
-
-
 	unsigned int ColorbufferCount = 2;
 
 	glEnable(GL_DEPTH_TEST);
-	Plane ground;
-	Plane2D screenPlane;
-	Cube cube(true, true, true);
+	m_Ground = std::make_unique<Plane>();
+	m_ScreenQuad = std::make_unique<Plane2D>();
+	m_Cube = std::make_unique<Cube>();
 
-	Shader shader("res/shaders/BetterBloom.shader");
-	Shader shaderLight("res/shaders/Lightbox.shader");
-	Shader shaderBlur("res/shaders/BlurBloom.shader");
-	Shader shaderBloomFinal("res/shaders/BloomFinal.shader");
+	m_Shader = std::make_unique<Shader>("res/shaders/AdvancedLighting/Bloom/Lighting.glsl");
+	m_Blur = std::make_unique<Shader>("res/shaders/AdvancedLighting/Bloom/Blur.glsl");
+	m_Bloom = std::make_unique<Shader>("res/shaders/AdvancedLighting/Bloom/Bloom.glsl");
 
-	Texture woodTexture("res/textures/wood.png", true, false, REPEAT, true);
-	Texture containerTexture("res/textures/container2.png", true, false, REPEAT, true);
+	m_WoodTexture = std::make_unique<Texture>("res/textures/wood.png");
+	m_ContainerTexture = std::make_unique<Texture>("res/textures/container2.png");
 
-	FrameBuffer hdrFBO;
-	Texture colorBuffers(ColorbufferCount);
-	hdrFBO.Bind();
-	colorBuffers.SetMultiAttachment(true);
-	colorBuffers.CreateColorbufferHDR(camera.GetScreenWidth(), camera.GetScreenHeight(), GL_RGBA16F);
-	hdrFBO.AttachColorBuffer(colorBuffers);
+	m_WoodTexture->SetHDR(true);
+	m_WoodTexture->SetFlipImage(false);
+	m_WoodTexture->SetWrapType(REPEAT);
+	m_WoodTexture->SetGammaCorrection(true);
+	m_WoodTexture->SyncTexture();
 
-	RenderBuffer rboDepth;
-	rboDepth.Bind();
-	rboDepth.CreateStorage(GL_DEPTH_COMPONENT, camera.GetScreenWidth(), camera.GetScreenHeight());
-	hdrFBO.AttachRenderBuffer(rboDepth, GL_DEPTH_ATTACHMENT);
+	m_ContainerTexture->SetHDR(true);
+	m_ContainerTexture->SetFlipImage(false);
+	m_ContainerTexture->SetWrapType(REPEAT);
+	m_ContainerTexture->SetGammaCorrection(true);
+	m_ContainerTexture->SyncTexture();
 
-	unsigned int* attachments = new unsigned int[2];
-	attachments[0] = GL_COLOR_ATTACHMENT0;
-	attachments[1] = GL_COLOR_ATTACHMENT1;
-	hdrFBO.ConfigureAttachments(attachments, 2);
-	hdrFBO.FrameBufferComplete();
-	hdrFBO.Unbind();
+	m_hdrFBO = std::make_unique<FrameBuffer>();
+	m_Colorbuffers = std::make_unique<RenderTexture>(ColorbufferCount);
+	m_Colorbuffers->SetMultiAttachment(true);
+	m_hdrFBO->Bind();
+	m_Colorbuffers->CreateColorbufferHDR(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), GL_RGBA16F);
+	m_hdrFBO->AttachColorBuffer(*m_Colorbuffers);
+
+	m_rboDepth = std::make_unique<RenderBuffer>();
+	m_rboDepth->Bind();
+	m_rboDepth->CreateStorage(GL_DEPTH_COMPONENT, m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_hdrFBO->AttachRenderBuffer(*m_rboDepth, GL_DEPTH_ATTACHMENT);
+	m_hdrFBO->ConfigureColorAttachments(*m_Colorbuffers);
+	m_hdrFBO->FrameBufferComplete();
+	m_hdrFBO->Unbind();
 
 	// ping-pong framebuffer for blurring
-	FrameBuffer pingpongFBO(2);
-	Texture pingpongColorbuffer(2);
-	pingpongColorbuffer.SetMultiAttachment(false);
-	pingpongColorbuffer.CreateColorbufferHDR(camera.GetScreenWidth(), camera.GetScreenHeight(), GL_RGBA16F);
-	pingpongFBO.AttachColorBuffer(pingpongColorbuffer);
-	pingpongFBO.FrameBufferComplete();
-	pingpongFBO.Unbind();
+	m_PingPongFBO = std::make_unique<FrameBuffer>(2);
+	m_PingPongColorbuffers = std::make_unique<RenderTexture>(2);
+	m_PingPongColorbuffers->SetMultiAttachment(false);
+	m_PingPongColorbuffers->CreateColorbufferHDR(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), GL_RGBA16F);
+	m_PingPongFBO->AttachColorBuffer(*m_PingPongColorbuffers);
+	m_PingPongFBO->FrameBufferComplete();
+	m_PingPongFBO->Unbind();
 
 	// Lighting info
 	//						Position  | Color
-	std::vector<std::pair<glm::vec3, glm::vec3>> lightData =
+	m_LightData =
 	{
-		std::pair<glm::vec3, glm::vec3>(glm::vec3( 0.0f, 0.5f,  1.5f), glm::vec3( 5.0f, 5.0f,  5.0f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(0.0f, 0.5f,  1.5f), glm::vec3(5.0f, 5.0f,  5.0f)),
 		std::pair<glm::vec3, glm::vec3>(glm::vec3(-4.0f, 0.5f, -3.0f), glm::vec3(10.0f, 0.0f,  0.0f)),
-		std::pair<glm::vec3, glm::vec3>(glm::vec3( 3.0f, 0.5f,  1.0f), glm::vec3( 0.0f, 0.0f, 15.0f)),
-		std::pair<glm::vec3, glm::vec3>(glm::vec3(-0.8f, 2.4f, -1.0f), glm::vec3( 0.0f, 5.0f,  0.0f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(3.0f, 0.5f,  1.0f), glm::vec3(0.0f, 0.0f, 15.0f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(-0.8f, 2.4f, -1.0f), glm::vec3(0.0f, 5.0f,  0.0f)),
 	};
 
 	// Cube positions
 	//					Position | Scale
-	std::vector<std::pair<glm::vec3, glm::vec3>> cubeData =
+	m_CubeData =
 	{
-		std::pair<glm::vec3, glm::vec3>( glm::vec3(0.0f,  1.5f,  0.0f), glm::vec3(0.5f)),
-		std::pair<glm::vec3, glm::vec3>(glm::vec3( 2.0f,  0.0f,  1.0f), glm::vec3(0.5f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(0.0f,  1.5f,  0.0f), glm::vec3(0.5f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(2.0f,  0.0f,  1.0f), glm::vec3(0.5f)),
 		std::pair<glm::vec3, glm::vec3>(glm::vec3(-1.0f, -1.0f,  2.0f), glm::vec3(1.0f)),
-		std::pair<glm::vec3, glm::vec3>(glm::vec3( 0.0f,  2.7f,  4.0f), glm::vec3(1.25f)),
+		std::pair<glm::vec3, glm::vec3>(glm::vec3(0.0f,  2.7f,  4.0f), glm::vec3(1.25f)),
 		std::pair<glm::vec3, glm::vec3>(glm::vec3(-2.0f,  1.0f, -3.0f), glm::vec3(1.0f)),
 		std::pair<glm::vec3, glm::vec3>(glm::vec3(-3.0f,  0.0f,  0.0f), glm::vec3(0.5f))
 	};
 
-	shader.Bind();
-	shader.SetUniform1i("diffuseTexture", 0);
-	shaderBlur.Bind();
-	shaderBlur.SetUniform1i("image", 0);
-	shaderBloomFinal.Bind();
-	shaderBloomFinal.SetUniform1i("scene", 0);
-	shaderBloomFinal.SetUniform1i("bloomBlur", 1);
+	m_Shader->Bind();
+	m_Shader->SetUniform1i("diffuseTexture", 0);
+	m_Blur->Bind();
+	m_Blur->SetUniform1i("image", 0);
+	m_Bloom->Bind();
+	m_Bloom->SetUniform1i("lighting", 0);
+	m_Bloom->SetUniform1i("blur", 1);
 
-	while (!glfwWindowShouldClose(window))
+	m_Light = std::make_unique<LightMarker>();
+}
+
+void Bloom::Render()
+{
+	m_Context.Renderer.Clear(BLACK, COLOR_DEPTH);
+
+	m_hdrFBO->Bind();
+	glm::mat4 model(1.0);
+	glm::mat4 view = m_Camera.GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(m_Camera.GetFOV()), m_Camera.GetAspectRatio(), 0.1f, 1000.0f);
+	m_Context.Renderer.ClearBufferBits(COLOR_DEPTH);
+
+	m_Shader->Bind();
+	m_Shader->SetUniformMat4f("projection", projection);
+	m_Shader->SetUniformMat4f("view", view);
+	m_Shader->SetUniformVec3("viewPos", m_Camera.GetPosition());
+	m_Shader->SetUniform1i("numLights", m_LightData.size());
+
+	for (int i = 0; i < m_LightData.size(); i++)
 	{
-		// Setup ImGUI frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-
-		float currentFrame = (float)glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
-
-		Renderer renderer;
-		ProcessMovement(window);
-		renderer.Clear(BLACK, COLOR_DEPTH);
-
-		// Render Here
-		glm::mat4 projection = glm::perspective(glm::radians(camera.GetFOV()), camera.GetAspectRatio(), 0.1f, 100.0f);
-		glm::mat4 view = camera.GetViewMatrix();
-		glm::mat4 model = glm::mat4(1.0);
-
-		// 1. Render scene into float point framebuffer
-		hdrFBO.Bind();
-		renderer.ClearBufferBits(COLOR_DEPTH);
-		shader.Bind();
-		shader.SetUniformMat4f("projection", projection);
-		shader.SetUniformMat4f("view", view);
-		woodTexture.Bind(0);
-		for (int i = 0; i < lightData.size(); i++)
-		{
-			shader.SetUniformVec3("lights[" + std::to_string(i) + "].Position", lightData[i].first);
-			shader.SetUniformVec3("lights[" + std::to_string(i) + "].Color", lightData[i].second);
-		}
-
-		shader.SetUniformVec3("viewPos", camera.GetPosition());
+		m_Shader->Bind();
+		m_Shader->SetUniformVec3("lights[" + std::to_string(i) + "].Position", m_LightData[i].first);
+		m_Shader->SetUniformVec3("lights[" + std::to_string(i) + "].Color", m_LightData[i].second);
+		m_Light->Draw(m_Context.Renderer, view, projection, m_LightData[i].first, m_LightData[i].second);
+	}
+	m_Shader->Bind();
+	for (int i = 0; i < m_CubeData.size(); i++)
+	{
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(12.5f));
-		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
-		shader.SetUniformMat4f("model", model);
-		ground.Draw(shader, renderer);
-		for (int i = 0; i < cubeData.size(); ++i)
-		{
-			model = glm::mat4(1.0);
-			model = glm::translate(model, cubeData[i].first);
-			model = glm::scale(model, cubeData[i].second);
-			shader.SetUniformMat4f("model", model);
-			containerTexture.Bind();
-			cube.Draw(shader, renderer);
-		}
-
-		shaderLight.Bind();
-		shaderLight.SetUniformMat4f("projection", projection);
-		shaderLight.SetUniformMat4f("view", view);
-		for (int i = 0; i < lightData.size(); ++i)
-		{
-			model = glm::mat4(1.0);
-			model = glm::translate(model, lightData[i].first);
-			model = glm::scale(model, glm::vec3(0.25f));
-			shaderLight.SetUniformMat4f("model", model);
-			shaderLight.SetUniformVec3("lightColor", lightData[i].second);
-			cube.Draw(shaderLight, renderer);
-
-		}
-		hdrFBO.Unbind();
-
-		// 2. blur bright fragments
-		bool horizontal = true, firstIteration = true;
-		unsigned int amount = 10;
-		shaderBlur.Bind();
-		for (unsigned int i = 0; i < amount; ++i)
-		{
-			unsigned int targetFBO = horizontal ? 0 : 1;
-			pingpongFBO.Bind(targetFBO);
-			shaderBlur.SetUniform1i("horizontal", horizontal);
-			if (firstIteration)
-			{
-				colorBuffers.Bind(0, 1);
-			}
-			else
-			{
-				unsigned int sampleIndex = horizontal ? 1 : 0;
-				pingpongColorbuffer.Bind(0, sampleIndex);
-			}
-			screenPlane.Draw(shaderBlur, renderer);
-			horizontal = !horizontal;
-			if (firstIteration)
-			{
-				firstIteration = false;
-			}
-		}
-		pingpongFBO.Unbind();
-
-		// 3. Render floating point color buffer to 2D quad and tonemap HDR colors to default framebuffer's color range
-		renderer.ClearBufferBits(COLOR_DEPTH);
-		shaderBloomFinal.Bind();
-		colorBuffers.Bind(0, 0);
-		pingpongColorbuffer.Bind(1, !horizontal);
-		shaderBloomFinal.SetUniform1i("bloom", bloom);
-		shaderBloomFinal.SetUniform1f("exposure", exposure);
-		screenPlane.Draw(shaderBloomFinal, renderer);
-
-		// ImGui window
-		{
-			std::string title = "Bloom: ";
-			title += (bloom ? "on" : "off");
-			title += "| Exposure: ";
-			title += std::to_string(exposure);
-			ImGui::Begin("Info Panel");
-			ImGui::Text(title.c_str());
-			ImGui::End();
-		}
-
-		//ImGui 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
-		// Check and call events and swap buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		model = glm::translate(model, m_CubeData[i].first);
+		model = glm::scale(model, m_CubeData[i].second);
+		m_Shader->SetUniformMat4f("model", model);
+		m_ContainerTexture->Bind();
+		m_Cube->Draw(*m_Shader, m_Context.Renderer);
 	}
-	delete[] attachments;
-	glfwTerminate();
+	model = glm::mat4(1.0);
+	model = glm::scale(model, glm::vec3(10.0f));
+	model = glm::rotate(model, glm::radians(-180.0f), glm::vec3(1.0f, 0.0f, 0.0));
+	m_Shader->Bind();
+	m_Shader->SetUniformMat4f("model", model);
+	m_WoodTexture->Bind();
+	m_Ground->Draw(*m_Shader, m_Context.Renderer);
+	m_hdrFBO->Unbind();
+
+	bool horizontal = true, first_iteration = true;
+	int amount = 10;
+	m_Blur->Bind();
+	for (unsigned int i = 0; i < amount; i++)
+	{
+		unsigned int fboIndex = horizontal ? 0 : 1;
+		m_PingPongFBO->Bind(fboIndex);
+		m_Blur->SetUniform1i("horizontal", horizontal);
+		if (first_iteration)
+		{
+			m_Colorbuffers->Bind(0, 1);
+		}
+		else
+		{
+			int sampleIndex = horizontal ? 1 : 0;
+			m_PingPongColorbuffers->Bind(0, sampleIndex);
+		}
+		m_ScreenQuad->Draw(*m_Blur, m_Context.Renderer);
+		horizontal = !horizontal;
+		if (first_iteration)
+		{
+			first_iteration = false;
+		}
+	}
+	m_PingPongFBO->Unbind();
+
+	m_Context.Renderer.ClearBufferBits(COLOR_DEPTH);
+	m_Bloom->Bind();
+	m_Colorbuffers->Bind(0, 0);
+	m_PingPongColorbuffers->Bind(1, !horizontal);
+	m_Bloom->SetUniform1i("bloom", m_UseBloom);
+	m_Bloom->SetUniform1f("exposure", m_Exposure);
+	m_ScreenQuad->Draw(*m_Bloom, m_Context.Renderer);
 }
 
-void Bloom::ProcessInput(GLFWwindow* window, int key, int action)
+void Bloom::OnGui()
 {
-	Scene::ProcessInput(window, key, action);
-	switch (key)
+	ImGui::SetNextWindowSize(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
+	if (ImGui::Begin("Bloom", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
 	{
-		case GLFW_KEY_SPACE:
-		{
-			switch (action)
-			{
-				case GLFW_PRESS:
-				{
-					if (!bloomKeyPressed) 
-					{
-						bloom = !bloom;
-						bloomKeyPressed = true;
-					}
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					bloomKeyPressed = false;
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		case GLFW_KEY_1:
-		{
-			switch (action)
-			{
-				case GLFW_REPEAT:
-				{
-					if (exposure > 0.0)
-					{
-						exposure -= 0.01f;
-					}
-					else
-					{
-						exposure = 0.0f;
-					}
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		case GLFW_KEY_2:
-		{
-			switch (action)
-			{
-				case GLFW_REPEAT:
-				{
-					exposure += 0.01f;
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		case GLFW_KEY_3:
-		{
-			switch (action)
-			{
-				case GLFW_PRESS:
-				{
-					exposure = 1.0f;
-					break;
-				}
-				default:
-					// No action
-					break;
-			}
-			break;
-		}
-		default:
-		{
-			// Non-mapped keybind
-			break;
-		}
+		ImGui::Checkbox("Bloom", &m_UseBloom);
+		ImGui::SliderFloat("Exposure", &m_Exposure, 0.1f, 10.0f);
 	}
-}
-
-void Bloom::AdjustScreenSize(int width, int height)
-{
-	Scene::AdjustScreenSize(width, height);
-	// We need to readjust our viewport, colorbuffer, and depthbuffer to resize the screen quad properly
-	glViewport(0, 0, width, height);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-}
-
-void Bloom::CheckFramebufferStatus(const char* name)
-{
-	GLint objectType, objectName;
-
-	std::cout << "\n--- Checking framebuffer: " << name << " ---\n";
-	for (int i = 0; i < 2; ++i) // check COLOR_ATTACHMENT0 + 0,1
-	{
-		glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_COLOR_ATTACHMENT0 + i,
-			GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-			&objectType);
-
-		if (objectType == GL_NONE)
-		{
-			std::cout << "Attachment " << i << ": NONE\n";
-			continue;
-		}
-
-		glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_COLOR_ATTACHMENT0 + i,
-			GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-			&objectName);
-
-		std::string typeStr = (objectType == GL_TEXTURE) ? "Texture" :
-			(objectType == GL_RENDERBUFFER) ? "Renderbuffer" : "Unknown";
-		std::cout << "Attachment " << i << ": " << typeStr
-			<< " ID = " << objectName << std::endl;
-	}
-
-	GLint depthType, depthName;
-	glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-		GL_DEPTH_ATTACHMENT,
-		GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE,
-		&depthType);
-
-	if (depthType != GL_NONE)
-	{
-		glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER,
-			GL_DEPTH_ATTACHMENT,
-			GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME,
-			&depthName);
-		std::cout << "Depth attachment: ID = " << depthName << std::endl;
-	}
-}
-
-void Bloom::CheckStatus()
-{
-	GLint drawBuffers[8];
-	GLint maxDrawBuffers;
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDrawBuffers);
-	glGetIntegerv(GL_DRAW_BUFFER0, drawBuffers);
-
-	std::cout << "Max draw buffers: " << maxDrawBuffers << std::endl;
-	for (int i = 0; i < 2; ++i)
-	{
-		GLint buf;
-		glGetIntegerv(GL_DRAW_BUFFER0 + i, &buf);
-		std::cout << "Draw buffer " << i << " bound to: "
-			<< ((buf == GL_NONE) ? "NONE" : std::to_string(buf)) << std::endl;
-	}
+	ImGui::End();
 }

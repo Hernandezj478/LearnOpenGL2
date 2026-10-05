@@ -168,6 +168,11 @@ void RenderTexture::SetTarget(TextureTarget target)
 	m_Target = target;
 }
 
+void RenderTexture::SetMultiAttachment(bool multiattach)
+{
+	m_MultiAttachment = multiattach;
+}
+
 unsigned int RenderTexture::GetRendererID(unsigned int index) const
 {
 	if (index < m_BufferCount)

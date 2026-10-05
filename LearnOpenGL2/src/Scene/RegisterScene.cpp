@@ -33,6 +33,7 @@
 #include "AdvancedLighting/NormalMapping/NormalMapping.h"
 #include "AdvancedLighting/ParallaxMapping/ParallaxMapping.h"
 #include "AdvancedLighting/HDR/HDR.h"
+#include "AdvancedLighting/Bloom/Bloom.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -62,4 +63,5 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<NormalMapping>("Advanced Lighting", "Normal Mapping", "");
 	Registry.Register<ParallaxMapping>("Advanced Lighting", "Parallax Mapping", "");
 	Registry.Register<HDR>("Advanced Lighting", "HDR", "");
+	Registry.Register<Bloom>("Advanced Lighting", "Bloom", "");
 }

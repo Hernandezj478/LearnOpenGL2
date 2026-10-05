@@ -22,6 +22,7 @@ public:
 	void Bind(unsigned int slot = 0, unsigned int index = 0) const;
 	void Unbind() const;
 	void SetTarget(TextureTarget target);
+	void SetMultiAttachment(bool multiattach);
 	unsigned int GetRendererID(unsigned int index = 0) const;
 	unsigned int GetBufferCount() const;
 	GLenum GetTarget() const { return (m_Target == TextureTarget::Texture2D) ? GL_TEXTURE_2D : GL_TEXTURE_2D_MULTISAMPLE; }
@@ -33,8 +34,8 @@ public:
 private:
 	unsigned int m_BufferCount;
 	unsigned int* m_RendererID;
-	bool m_MultiAttachment = false;
 	int m_Width = 0;
 	int m_Height = 0;
+	bool m_MultiAttachment;
 	TextureTarget m_Target;
 };
