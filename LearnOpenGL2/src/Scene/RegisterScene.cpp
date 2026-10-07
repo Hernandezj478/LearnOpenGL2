@@ -34,6 +34,7 @@
 #include "AdvancedLighting/ParallaxMapping/ParallaxMapping.h"
 #include "AdvancedLighting/HDR/HDR.h"
 #include "AdvancedLighting/Bloom/Bloom.h"
+#include "AdvancedLighting/DeferredShading/DeferredShading.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -64,4 +65,5 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<ParallaxMapping>("Advanced Lighting", "Parallax Mapping", "");
 	Registry.Register<HDR>("Advanced Lighting", "HDR", "");
 	Registry.Register<Bloom>("Advanced Lighting", "Bloom", "");
+	Registry.Register<DeferredShading>("Advanced Lighting", "Deferred Shading", "");
 }
