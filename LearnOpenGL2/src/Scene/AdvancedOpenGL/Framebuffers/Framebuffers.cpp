@@ -65,8 +65,8 @@ Framebuffers::Framebuffers(const SceneContext& context) : Scene3D(context)
 	m_Framebuffer->Bind();
 
 	//Texturebuffers
-	m_Colorbuffer = std::make_unique<RenderTexture>(1);
-	m_Colorbuffer->CreateColorbuffer(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_Colorbuffer = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_Colorbuffer->CreateTextureBuffer(GL_RGB, GL_RGB, GL_UNSIGNED_BYTE);
 	m_Framebuffer->AttachColorBuffer(*m_Colorbuffer);
 
 	//Renderbuffer

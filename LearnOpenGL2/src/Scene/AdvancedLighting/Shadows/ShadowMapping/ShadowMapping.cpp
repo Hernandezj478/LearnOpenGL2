@@ -26,9 +26,11 @@ ShadowMapping::ShadowMapping(const SceneContext& context) : Scene3D(context)
 	m_FloorTexture->SyncTexture();
 
 	m_DepthmapFBO = std::make_unique<FrameBuffer>();
-	m_DepthBuffer = std::make_unique<RenderTexture>();
+	m_DepthBuffer = std::make_unique<RenderTexture>(SHADOW_WIDTH, SHADOW_HEIGHT);
 	m_DepthBuffer->Bind();
-	m_DepthBuffer->CreateDepthbufferTexture(SHADOW_WIDTH, SHADOW_HEIGHT, BCLAMP, GL_LINEAR);
+	m_DepthBuffer->SetWrapS(GL_CLAMP_TO_BORDER);
+	m_DepthBuffer->SetWrapT(GL_CLAMP_TO_BORDER);
+	m_DepthBuffer->CreateTextureBuffer(GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT);
 	m_DepthBuffer->CreateBorder(WHITE);
 
 	m_DepthmapFBO->Bind();
@@ -130,7 +132,7 @@ void ShadowMapping::Render()
 	m_Shader->SetUniformVec3("viewPos", m_Camera.GetPosition());
 	m_Shader->SetUniformVec3("lightPos", m_LightPosition);
 	m_Shader->SetUniformMat4f("lightSpaceMatrix", lightSpaceMatrix);
-	m_FloorTexture->Bind(0);
+	m_FloorTexture->Bind();
 	m_DepthBuffer->Bind(1);
 	
 	//Floor

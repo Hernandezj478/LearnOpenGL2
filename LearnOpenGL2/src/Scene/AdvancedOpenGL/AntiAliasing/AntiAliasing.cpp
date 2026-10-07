@@ -24,8 +24,10 @@ AntiAliasing::AntiAliasing(const SceneContext& context) : Scene3D(context)
 	m_CubeTexture->SyncTexture();
 
 	m_Framebuffer = std::make_unique<FrameBuffer>();
-	m_RenderTexture = std::make_unique<RenderTexture>();
-	m_RenderTexture->CreateColorBufferMSAA(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), 4);
+	m_RenderTexture = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_RenderTexture->SetSamples(4);
+	m_RenderTexture->SetTarget(GL_TEXTURE_2D_MULTISAMPLE);
+	m_RenderTexture->CreateTextureBuffer(GL_RGB);
 	m_RenderTexture->Unbind();
 
 	m_Framebuffer->Bind();
@@ -40,8 +42,8 @@ AntiAliasing::AntiAliasing(const SceneContext& context) : Scene3D(context)
 	m_Framebuffer->Unbind();
 
 	m_IFB = std::make_unique<FrameBuffer>();
-	m_ScreenTexture = std::make_unique<RenderTexture>();
-	m_ScreenTexture->CreateColorbuffer(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_ScreenTexture = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_ScreenTexture->CreateTextureBuffer(GL_RGB, GL_RGB, GL_UNSIGNED_BYTE);
 	m_IFB->Bind();
 	m_IFB->AttachColorBuffer(*m_ScreenTexture);
 	m_IFB->Unbind();
@@ -73,7 +75,7 @@ void AntiAliasing::Render()
 	m_Cube->Draw(*m_Shader, m_Context.Renderer);
 	m_CubeTexture->Unbind();
 
-	m_Framebuffer->BlitColor(*m_IFB, m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_Framebuffer->BlitBuffer(m_IFB.get(), m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
 	m_Framebuffer->Unbind();
 
 	glDisable(GL_DEPTH_TEST);

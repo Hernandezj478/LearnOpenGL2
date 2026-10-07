@@ -33,8 +33,8 @@ HDR::HDR(const SceneContext& context) : Scene3D(context)
 	m_WoodTexture->Upload();
 
 	m_hdrFBO = std::make_unique<FrameBuffer>();
-	m_Colorbuffer = std::make_unique<RenderTexture>();
-	m_Colorbuffer->CreateColorbufferHDR(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), GL_RGBA16F);
+	m_Colorbuffer = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
+	m_Colorbuffer->CreateTextureBuffer(GL_RGBA16F, GL_RGBA, GL_FLOAT);
 
 	m_rboDepth = std::make_unique<RenderBuffer>();
 	m_rboDepth->Bind();

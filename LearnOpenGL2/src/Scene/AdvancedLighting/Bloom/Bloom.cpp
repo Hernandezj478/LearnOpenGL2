@@ -44,25 +44,26 @@ Bloom::Bloom(const SceneContext& context) : Scene3D(context)
 	m_ContainerTexture->SyncTexture();
 
 	m_hdrFBO = std::make_unique<FrameBuffer>();
-	m_Colorbuffers = std::make_unique<RenderTexture>(ColorbufferCount);
+	m_Colorbuffers = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), ColorbufferCount);
 	m_Colorbuffers->SetMultiAttachment(true);
 	m_hdrFBO->Bind();
-	m_Colorbuffers->CreateColorbufferHDR(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), GL_RGBA16F);
+	m_Colorbuffers->CreateTextureBuffer(GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	m_hdrFBO->AttachColorBuffer(*m_Colorbuffers);
+	m_hdrFBO->ConfigureColorAttachments(2);
 
 	m_rboDepth = std::make_unique<RenderBuffer>();
 	m_rboDepth->Bind();
 	m_rboDepth->CreateStorage(GL_DEPTH_COMPONENT, m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight());
 	m_hdrFBO->AttachRenderBuffer(*m_rboDepth, GL_DEPTH_ATTACHMENT);
-	m_hdrFBO->ConfigureColorAttachments(*m_Colorbuffers);
 	m_hdrFBO->FrameBufferComplete();
 	m_hdrFBO->Unbind();
 
 	// ping-pong framebuffer for blurring
 	m_PingPongFBO = std::make_unique<FrameBuffer>(2);
-	m_PingPongColorbuffers = std::make_unique<RenderTexture>(2);
+	m_PingPongColorbuffers = std::make_unique<RenderTexture>(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), 2);
 	m_PingPongColorbuffers->SetMultiAttachment(false);
-	m_PingPongColorbuffers->CreateColorbufferHDR(m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight(), GL_RGBA16F);
+	m_PingPongColorbuffers->CreateTextureBuffer(GL_RGBA16F, GL_RGBA, GL_FLOAT);
+	m_PingPongFBO->Bind();
 	m_PingPongFBO->AttachColorBuffer(*m_PingPongColorbuffers);
 	m_PingPongFBO->FrameBufferComplete();
 	m_PingPongFBO->Unbind();
