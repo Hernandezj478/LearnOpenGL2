@@ -26,6 +26,11 @@ public:
 	void SetFlipImage(bool flipImage);
 	void SetInvertGreen(bool invertG);
 	void SetWrapType(WrapType uvWrap);
+	void SetWrapS(int wrap);
+	void SetWrapT(int wrap);
+	void SetWrapR(int wrap);
+	void SetMinFilter(int filter);
+	void SetMagFilter(int filter);
 	void SetGammaCorrection(bool gamma);
 
 	void FlipImageVertically();
@@ -48,6 +53,13 @@ private:
 	int m_Width, m_Height, m_nrChannels;
 	std::string m_FilePath;
 	TextureType m_Type = UNKNOWN;
+
+	int m_WrapS = GL_REPEAT;
+	int m_WrapT = GL_REPEAT;
+	int m_WrapR = GL_REPEAT;
+	int m_MinFilter = GL_LINEAR_MIPMAP_LINEAR;
+	int m_MagFilter = GL_LINEAR;
+
 	WrapType m_UVWrap;
 
 	FileType GetFileType(const std::string& filepath);

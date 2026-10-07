@@ -39,9 +39,3 @@ enum TextureType
 	ROUGHNESS = 7,
 	UNKNOWN = -1
 };
-
-enum class TextureTarget
-{
-	Texture2D = GL_TEXTURE_2D,
-	Texture2DMS = GL_TEXTURE_2D_MULTISAMPLE
-};

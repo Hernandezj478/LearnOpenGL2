@@ -136,15 +136,26 @@ void FrameBuffer::CreateAndAttachMRTColorBuffer(RenderTexture& color, int width,
 //------------------------------------------------------------------------------------------------------------
 
 
-void FrameBuffer::ConfigureColorAttachments(const RenderTexture& renderTexture)
+//void FrameBuffer::ConfigureColorAttachments(const RenderTexture& renderTexture)
+//{
+//	unsigned int count = renderTexture.GetBufferCount();
+//	unsigned int* attachments = new unsigned int[count];
+//	for (int i = 0; i < count; i++)
+//	{
+//		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+//	}
+//	glDrawBuffers(count, attachments);
+//	delete[] attachments;
+//}
+
+void FrameBuffer::ConfigureColorAttachments(int attachmentCount)
 {
-	unsigned int count = renderTexture.GetBufferCount();
-	unsigned int* attachments = new unsigned int[count];
-	for (int i = 0; i < count; i++)
+	unsigned int* attachments = new unsigned int[attachmentCount];
+	for (int i = 0; i < attachmentCount; i++)
 	{
 		attachments[i] = GL_COLOR_ATTACHMENT0 + i;
 	}
-	glDrawBuffers(count, attachments);
+	glDrawBuffers(attachmentCount, attachments);
 	delete[] attachments;
 }
 
@@ -163,9 +174,12 @@ bool FrameBuffer::FrameBufferComplete()
 	return true;
 }
 
-void FrameBuffer::BlitColor(const FrameBuffer& dst, int screenWidth, int screenHeight, GLenum filter)
+void FrameBuffer::BlitBuffer(FrameBuffer* dst, int screenWidth, int screenHeight, int mask, GLenum filter)
 {
 	BindRead();
-	dst.BindDraw();
-	glBlitFramebuffer(0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, GL_COLOR_BUFFER_BIT, filter);
+	if (dst)
+	{
+		dst->BindDraw();
+	}
+	glBlitFramebuffer(0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, mask, filter);
 }

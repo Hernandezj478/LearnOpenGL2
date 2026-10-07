@@ -1,15 +1,13 @@
 #pragma once
 
 #include "RenderBuffer.h"
+#include <vector>
 
 class RenderTexture;
 class Cubemap;
 
 class FrameBuffer
 {
-private:
-	unsigned int* m_RendererID;
-	unsigned int m_BufferCount;
 public:
 	FrameBuffer(unsigned int count = 1);
 	~FrameBuffer();
@@ -34,11 +32,17 @@ public:
 	void CreateAndAttachMRT(RenderTexture& color, int width, int height, GLenum internalFormat);
 	void CreateAndAttachMRTColorBuffer(RenderTexture& color, int width, int height);
 
-	void ConfigureColorAttachments(const RenderTexture& renderTexture);
+	//void ConfigureColorAttachments(const RenderTexture& renderTexture);
+	void ConfigureColorAttachments(int attachmentCount);
 
 	bool FrameBufferComplete();
 
-	void BlitColor(const FrameBuffer& dst, int screenWidth, int screenHeight, GLenum filter = GL_NEAREST);
+	void BlitBuffer(FrameBuffer* dst, int screenWidth, int screenHeight, int mask = GL_COLOR_BUFFER_BIT, GLenum filter = GL_NEAREST);
 
 	inline unsigned int GetRendererID(unsigned int index = 0) const { return m_RendererID[index]; }
+private:
+	unsigned int* m_RendererID;
+	unsigned int m_BufferCount;
+
+	std::vector<unsigned int> m_ColorAttachments;
 };

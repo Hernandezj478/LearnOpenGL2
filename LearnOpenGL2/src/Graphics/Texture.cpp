@@ -79,6 +79,7 @@ void Texture::Upload()
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		Unbind();
@@ -110,7 +111,7 @@ void Texture::Upload()
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, m_LocalBuffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,  m_UVWrap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_UVWrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_UVWrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -162,6 +163,31 @@ void Texture::SetInvertGreen(bool invertG)
 void Texture::SetWrapType(WrapType uvWrap)
 {
 	m_UVWrap = uvWrap;
+}
+
+void Texture::SetWrapS(int wrap)
+{
+	m_WrapS = wrap;
+}
+
+void Texture::SetWrapT(int wrap)
+{
+	m_WrapT = wrap;
+}
+
+void Texture::SetWrapR(int wrap)
+{
+	m_WrapR = wrap;
+}
+
+void Texture::SetMinFilter(int filter)
+{
+	m_MinFilter = filter;
+}
+
+void Texture::SetMagFilter(int filter)
+{
+	m_MagFilter = filter;
 }
 
 void Texture::SetGammaCorrection(bool gamma)
