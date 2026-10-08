@@ -21,4 +21,5 @@ public:
 	void EndFrame();
 
 	bool WantsMouse() const;
+	void DrawFPSOverlay(const int& fps);
 };

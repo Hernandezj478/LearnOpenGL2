@@ -34,6 +34,9 @@ private:
 
 	double m_LastFrame = 0.0;
 	float m_DeltaTime = 0.0f;
+	int m_FrameCount = 0;
+	float m_FPSTimer = 0.0f;
+	int m_FPS = 0;
 
 	glm::ivec2 FrameSize{0.0f, 0.0f};
 	std::optional<glm::ivec2> m_PendingResize;
@@ -45,7 +48,7 @@ private:
 	/*
 	*! @brief Apply resize request, swap scenes, start next frame on scene switch
 	*/
-	void ApplyPendingRequest();	// resize, scene switch, top of frame
+	void ApplyPendingRequest();
 	void DrawUI();	// menu + scene panel, collects UI request bundle
 	void EndFrame();	// restore FBO + viewport, render ImGUI, swap
 	void UpdateCursorMode();

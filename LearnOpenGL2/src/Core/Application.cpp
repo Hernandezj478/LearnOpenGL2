@@ -40,6 +40,19 @@ void Application::Run()
 
 bool Application::BeginFrame()
 {
+	// Start the ImGui frame
+	m_ImGui.BeginFrame();
+
+	m_FrameCount++;
+	m_FPSTimer += m_DeltaTime;
+	if (m_FPSTimer >= 1.0f)
+	{
+		m_FPS = m_FrameCount;
+		m_FrameCount = 0;
+		m_FPSTimer -= 1.0f;
+	}
+	m_ImGui.DrawFPSOverlay(m_FPS);
+
 	ApplyPendingRequest();
 	m_Input.NewFrame();
 	m_Window.PollEvents();
@@ -61,8 +74,6 @@ bool Application::BeginFrame()
 		// Set scene camera to update with new window size
 		m_SceneManager.OnResize(FrameSize.x, FrameSize.y);
 	}
-	// Start the ImGui frame
-	m_ImGui.BeginFrame();
 	return true;
 }
 
