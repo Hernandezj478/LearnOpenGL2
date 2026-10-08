@@ -8,6 +8,7 @@
 #include "Graphics/Buffers/RenderBuffer.h"
 #include "Graphics/Model/Model.h"
 #include "Graphics/Shapes/Plane.h"
+#include "Graphics/Shapes/Sphere.h"
 #include "Graphics/Renderer.h"
 #include "Scene/SceneContext.h"
 
@@ -52,6 +53,8 @@ DeferredShading::DeferredShading(const SceneContext& context) :Scene3D(context)
 	m_Backpack = std::make_unique<Model>("res/meshes/Backpack/Backpack.gltf");
 	m_Backpack->Finalize();
 	m_ScreenQuad = std::make_unique<Plane2D>();
+	m_LightVolume = std::make_unique<Sphere>();
+
 
 	m_LightingPass->Bind();
 	m_LightingPass->SetUniform1i("gPosition", 0);
@@ -102,6 +105,7 @@ DeferredShading::DeferredShading(const SceneContext& context) :Scene3D(context)
 void DeferredShading::Render()
 {
 	m_GBuffer->Bind();
+	glDepthMask(GL_TRUE);
 	glEnable(GL_DEPTH_TEST);
 	m_Context.Renderer.Clear(BLACK, COLOR_DEPTH);
 
@@ -109,6 +113,7 @@ void DeferredShading::Render()
 	glm::mat4 view = m_Camera.GetViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(m_Camera.GetFOV()), m_Camera.GetAspectRatio(), 0.1f, 1000.0f);
 	m_Context.Renderer.ClearBufferBits(COLOR_DEPTH);
+	glDisable(GL_BLEND);
 	m_GeometryPass->Bind();
 	m_GeometryPass->SetUniformMat4f("view", view);
 	m_GeometryPass->SetUniformMat4f("projection", projection);
@@ -121,6 +126,7 @@ void DeferredShading::Render()
 		m_Backpack->Draw(*m_GeometryPass, m_Context.Renderer);
 	}
 	m_GBuffer->Unbind();
+	glDepthMask(GL_FALSE);
 	glDisable(GL_DEPTH_TEST);
 	switch (m_CurrentSelection)
 	{
@@ -184,7 +190,16 @@ void DeferredShading::DrawDeferredTest()
 
 void DeferredShading::DrawDeferredLighting()
 {
+	glEnable(GL_BLEND);
+	glBlendEquation(GL_FUNC_ADD);
+	glBlendFunc(GL_ONE, GL_ONE);
+	glCullFace(GL_FRONT);
+	m_GBuffer->BindRead();
 	m_Context.Renderer.ClearBufferBits(COLOR_DEPTH);
+
+	glm::mat4 view = m_Camera.GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(m_Camera.GetFOV()), m_Camera.GetAspectRatio(), 0.1f, 1000.0f);
+	glm::mat4 model = glm::mat4(1.0);
 
 	m_Position->Bind(0);
 	m_Normal->Bind(1);
@@ -194,14 +209,33 @@ void DeferredShading::DrawDeferredLighting()
 	const float linear = 0.7f;
 	const float quadratic = 1.8f;
 
+	glm::vec2 screenSize = { m_Camera.GetScreenWidth(), m_Camera.GetScreenHeight() };
+
 	m_LightingPass->Bind();
 	m_LightingPass->SetUniformVec3("viewPos", m_Camera.GetPosition());
+	m_LightingPass->SetUniformMat4f("projection", projection);
+	m_LightingPass->SetUniformMat4f("view", view);
+	m_LightingPass->SetUniformVec2("gScreenSize", screenSize);
 	for (int i = 0; i < m_LightData.size(); i++)
 	{
-		m_LightingPass->SetUniformVec3("lights[" + std::to_string(i) + "].Position", m_LightData[i].first);
-		m_LightingPass->SetUniformVec3("lights[" + std::to_string(i) + "].Color", m_LightData[i].second);
+		float maxBrightness = std::fmaxf(std::fmaxf(m_LightData[i].second.r, m_LightData[i].second.g), m_LightData[i].second.b);
+
+		float a, b, c;
+		a = quadratic;
+		b = linear;
+		c = constant - maxBrightness * (256.0f / 5.0f);
+		float radius = (-b + std::sqrt(b * b - 4 * a * c)) / (2.0f * a);
+		m_LightingPass->SetUniform1f("radius", radius);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, m_LightData[i].first);
+		model = glm::scale(model, glm::vec3(radius));
+		m_LightingPass->SetUniformMat4f("model", model);
+		m_LightingPass->SetUniformVec3("light.Position", m_LightData[i].first);
+		m_LightingPass->SetUniformVec3("light.Color", m_LightData[i].second);
+		m_LightVolume->Draw(*m_LightingPass, m_Context.Renderer);
 	}
-	m_ScreenQuad->Draw(*m_LightingPass, m_Context.Renderer);
+	glCullFace(GL_BACK);
+	glDisable(GL_BLEND);
 	DrawLights();
 }
 

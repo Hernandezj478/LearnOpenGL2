@@ -15,6 +15,7 @@ class RenderBuffer;
 class Model;
 class Plane2D;
 class LightMarker;
+class Sphere;
 
 class DeferredShading : public Scene3D
 {
@@ -45,6 +46,7 @@ private:
 
 	std::unique_ptr<Plane2D> m_ScreenQuad;
 	std::unique_ptr<Model> m_Backpack;
+	std::unique_ptr<Sphere> m_LightVolume;
 
 	std::unique_ptr<LightMarker> m_Light;
 

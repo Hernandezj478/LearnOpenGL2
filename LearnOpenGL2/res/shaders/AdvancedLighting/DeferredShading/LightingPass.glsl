@@ -1,21 +1,19 @@
 #shader vertex
 #version 330 core
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
 
-out vec2 TexCoord;
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
 
 void main()
 {
-	TexCoord = aTexCoord;
-	gl_Position = vec4(aPos, 1.0);
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
 
 #shader fragment
 #version 330 core
 out vec4 FragColor;
-
-in vec2 TexCoord;
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
@@ -27,38 +25,37 @@ struct Light
 	vec3 Color;
 };
 
-const int NR_LIGHTS = 32;
-uniform Light lights[NR_LIGHTS];
+uniform Light light;
 uniform vec3 viewPos;
+uniform vec2 gScreenSize;
 
 void main()
 {
+	vec3 lighting = vec3(0.0);
+	vec2 TexCoord = gl_FragCoord.xy / gScreenSize;
+
 	vec3 Albedo = vec3(texture(gAlbedoSpec, TexCoord));
-	
-	vec3 ambient = 0.3 * Albedo;
 	vec3 Normal = vec3(texture(gNormal, TexCoord));
 	vec3 FragPos = vec3(texture(gPosition, TexCoord));
 	float Specular = texture(gAlbedoSpec, TexCoord).a;
-	vec3 lighting = vec3(0.0);
 
-	for(int i = 0; i < NR_LIGHTS; i++)
-	{
-		vec3 lightDir = normalize(lights[i].Position - FragPos);
-		float diff = max(dot(lightDir, Normal), 0.0);
-		vec3 diffuse = diff * lights[i].Color * Albedo;
+	vec3 lightDir = normalize(light.Position - FragPos);
 
-		vec3 viewDir = normalize(viewPos - FragPos);
-		vec3 halfway = normalize(lightDir + viewDir);
-		float spec = pow(max(dot(Normal, halfway), 0.0), 32.0);
-		vec3 specular = spec * lights[i].Color * Albedo * Specular;
+	float diff = max(dot(lightDir, Normal), 0.0);
+	vec3 diffuse = diff * light.Color * Albedo;
 
-		float distance = length(lights[i].Position - FragPos);
-		float attenuation = 1 / (distance * distance);
-		diffuse *= attenuation;
-		specular *= attenuation;
+	vec3 viewDir = normalize(viewPos - FragPos);
+	vec3 halfway = normalize(lightDir + viewDir);
 
-		lighting += (diffuse + specular);
-	}
-	vec3 result = ambient + lighting;
-	FragColor = vec4(result, 1.0);
+	float spec = pow(max(dot(Normal, halfway), 0.0), 32.0);
+	vec3 specular = spec * light.Color * Albedo * Specular;
+
+	float distance = length(light.Position - FragPos);
+	float attenuation = 1 / (distance * distance);
+	
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	lighting = diffuse + specular;
+	FragColor = vec4(lighting, 1.0);
 }
