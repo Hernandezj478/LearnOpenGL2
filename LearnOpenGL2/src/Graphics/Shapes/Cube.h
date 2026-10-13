@@ -33,5 +33,6 @@ private:
 	std::unique_ptr<VertexBufferLayout> m_Layout;
 	std::unique_ptr<IndexBuffer> m_EBO;
 
+
 	void GenerateVertices();
 };

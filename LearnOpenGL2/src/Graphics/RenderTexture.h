@@ -9,8 +9,15 @@ public:
 	explicit RenderTexture(int width, int height, unsigned int bufferCount = 1);
 	~RenderTexture();
 
-	void CreateTextureBuffer(GLint internalFormat, GLenum format = GL_RGB, GLenum type = GL_UNSIGNED_INT);
-	
+	/*
+	*! @brief Create a buffer
+	* @param interlaFormat Specifies the number of color components in texture
+	* @param format Specifies the format of the pixel data
+	* @param type Specified the data type of the pixel
+	*/
+	void CreateTextureBuffer(GLint internalFormat, GLenum format = GL_RGB, GLenum type = GL_UNSIGNED_INT, const void* data = NULL);
+	void AddTextureData(GLenum format, GLenum type, const void* data);
+
 	// TODO: Remove old functions, no longer needed
 	/*void CreateColorBufferMSAA(int samples, GLenum internalFormat = GL_RGB);
 	void CreateColorbufferHDR(GLint internalFormat = GL_RGBA16F, WrapType uvWrap = ECLAMP, GLenum filter = GL_LINEAR);

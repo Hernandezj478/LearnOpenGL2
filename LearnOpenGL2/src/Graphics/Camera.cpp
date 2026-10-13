@@ -89,7 +89,7 @@ void Camera::PocessMouseMovement(double xoffset, double yoffset)
 
 void Camera::ProcessMouseScroll(double yoffset)
 {
-	cameraSpeedMultiplier = std::clamp(cameraSpeedMultiplier + yoffset, 1.0, 1000.0);
+	cameraSpeedMultiplier = std::clamp(cameraSpeedMultiplier + yoffset, 0.1, 20.0);
 }
 
 void Camera::AdjustFOV(CameraZoom zoom)

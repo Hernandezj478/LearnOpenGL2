@@ -46,6 +46,7 @@ public:
 	inline float GetAspectRatio() const { return AspectRatio; }
 	inline glm::vec3 GetPosition() const { return CameraPos; }
 	inline glm::vec3 GetFront() const { return CameraFront; }
+	inline glm::vec2 GetScreenDimension() const { return { ScreenWidth, ScreenHeight }; }
 	inline int GetScreenWidth() const { return ScreenWidth; }
 	inline int GetScreenHeight() const { return ScreenHeight; }
 

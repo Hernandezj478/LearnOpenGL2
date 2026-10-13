@@ -185,5 +185,9 @@ GLint Shader::GetUniformLocation(const std::string& name) const
 	}
 	GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 	m_UniformLocationCache[name] = location;
+	if (location == -1)
+	{
+		std::cout << "Uniform not found: [" + name + "]\n";
+	}
 	return location;
 }

@@ -33,8 +33,6 @@ public:
 	void SetMagFilter(int filter);
 	void SetGammaCorrection(bool gamma);
 
-	void FlipImageVertically();
-	void InvertGChannel();
 	int GetWidth() const;
 	int GetHeight() const;
 	int GetNRChannels() const;
@@ -63,4 +61,5 @@ private:
 	WrapType m_UVWrap;
 
 	FileType GetFileType(const std::string& filepath);
+	void InvertGChannel();
 };

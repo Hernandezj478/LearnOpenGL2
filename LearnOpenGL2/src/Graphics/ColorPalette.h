@@ -17,6 +17,7 @@
 #define DARK_GREY			glm::vec4(0.2f, 0.2f, 0.2f, 1.0f)
 #define LIGHT_GREY			glm::vec4(0.8f, 0.8f, 0.8f, 1.0f)
 #define TRANSPARENT_BLACK	glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)
+#define LIGHT_RED			glm::vec4(0.5f, 0.0f, 0.0f, 1.0f)
 
 #define BRIGHT_BLUE			glm::vec4(0.2f, 0.2f, 1.0f, 1.0f)
 #define MUTED_BLUE			glm::vec4(0.2f, 0.2f, 0.6f, 1.0f)

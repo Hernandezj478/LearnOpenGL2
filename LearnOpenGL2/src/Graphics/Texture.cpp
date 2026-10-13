@@ -20,8 +20,10 @@ Texture::~Texture()
 
 void Texture::LoadPixels()
 {
+	stbi_set_flip_vertically_on_load_thread(m_FlipImage);
 	if (m_HDR)
-	{
+	{	
+
 		m_HDRBuffer = stbi_loadf(m_FilePath.c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 		if (!m_HDRBuffer)
 		{
@@ -34,7 +36,6 @@ void Texture::LoadPixels()
 		}
 		return;
 	}
-
 	m_LocalBuffer = stbi_load(m_FilePath.c_str(), &m_Width, &m_Height, &m_nrChannels, 0);
 	if (!m_LocalBuffer)
 	{
@@ -43,10 +44,6 @@ void Texture::LoadPixels()
 		stream << "[ERROR][" << (__LINE__) << "][" << __FILE__
 			<< "] Could not open file " << m_FilePath << std::endl;
 		throw std::runtime_error(stream.str());
-	}
-	if (m_FlipImage)
-	{
-		FlipImageVertically();
 	}
 	if (m_InvertGChannel)
 	{
@@ -90,6 +87,7 @@ void Texture::Upload()
 		}
 		return;
 	}
+
 	GLenum internalFormat, dataFormat;
 	switch (m_nrChannels)
 	{
@@ -193,26 +191,6 @@ void Texture::SetMagFilter(int filter)
 void Texture::SetGammaCorrection(bool gamma)
 {
 	m_GammaCorrection = gamma;
-}
-
-void Texture::FlipImageVertically()
-{
-	if (!m_LocalBuffer) 
-	{
-		return;
-	}
-	const int rowSize = m_Width * m_nrChannels;
-	std::vector<unsigned char> tempRow(rowSize);
-	int h = m_Height;
-	for (int y = 0; y < (h>>1); y++)
-	{
-		unsigned char* rowTop = m_LocalBuffer + y * rowSize;
-		unsigned char* rowBottom = m_LocalBuffer + (m_Height - 1 - y) * rowSize;
-
-		std::memcpy(tempRow.data(), rowTop, rowSize);
-		std::memcpy(rowTop, rowBottom, rowSize);
-		std::memcpy(rowBottom, tempRow.data(), rowSize);
-	}
 }
 
 void Texture::InvertGChannel()

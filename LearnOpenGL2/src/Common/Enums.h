@@ -37,5 +37,7 @@ enum TextureType
 	AMBIENT = 5,
 	AO = 6,
 	ROUGHNESS = 7,
+	METALLIC = 8,
+	METALLIC_ROUGHNESS = 9,
 	UNKNOWN = -1
 };

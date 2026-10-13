@@ -13,14 +13,14 @@ RenderTexture::~RenderTexture()
 	delete m_RendererID;
 }
 
-void RenderTexture::CreateTextureBuffer(GLint internalFormat, GLenum format, GLenum type)
+void RenderTexture::CreateTextureBuffer(GLint internalFormat, GLenum format, GLenum type, const void* data)
 {
 	if (m_Target == GL_TEXTURE_2D)
 	{
 		for (unsigned int i = 0; i < m_BufferCount; ++i)
 		{
 			glBindTexture(m_Target, m_RendererID[i]);
-			glTexImage2D(m_Target, 0, internalFormat, m_Width, m_Height, 0, format, type, NULL);
+			glTexImage2D(m_Target, 0, internalFormat, m_Width, m_Height, 0, format, type, data);
 
 			glTexParameteri(m_Target, GL_TEXTURE_MIN_FILTER, m_MinFilter);
 			glTexParameteri(m_Target, GL_TEXTURE_MAG_FILTER, m_MagFilter);
@@ -35,6 +35,18 @@ void RenderTexture::CreateTextureBuffer(GLint internalFormat, GLenum format, GLe
 		{
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_RendererID[i]);
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, m_MSAASamples, internalFormat, m_Width, m_Height, GL_TRUE);
+		}
+	}
+}
+
+void RenderTexture::AddTextureData(GLenum format, GLenum type, const void* data)
+{
+	if (m_Target == GL_TEXTURE_2D)
+	{
+		for (unsigned int i = 0; i < m_BufferCount; ++i)
+		{
+			glBindTexture(m_Target, m_RendererID[i]);
+			glTexSubImage2D(m_Target, 0, 0, 0, m_Width, m_Height, format, type, data);
 		}
 	}
 }
@@ -167,12 +179,12 @@ void RenderTexture::CreateBorder(glm::vec4 color)
 
 void RenderTexture::Bind(unsigned int slot, unsigned int index) const
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
 	// Lets make sure the index is in bounds of the array
 	if (index >= m_BufferCount)
 	{
 		throw std::runtime_error("Array out of bounds");
 	}
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GetTarget(), m_RendererID[index]);
 }
 

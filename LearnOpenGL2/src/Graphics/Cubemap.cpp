@@ -25,6 +25,31 @@ void Cubemap::SetFilePathVector(std::vector<std::string> filepaths)
 	m_FilePaths = filepaths;
 }
 
+void Cubemap::SetMinFilter(int minFilter)
+{
+	m_MinFilter = minFilter;
+}
+
+void Cubemap::SetMagFilter(int magFilter)
+{
+	m_MagFilter = magFilter;
+}
+
+void Cubemap::SetWrapS(int wrapS)
+{
+	m_WrapS = wrapS;
+}
+
+void Cubemap::SetWrapT(int wrapT)
+{
+	m_WrapT = wrapT;
+}
+
+void Cubemap::SetWrapR(int wrapR)
+{
+	m_WrapR = wrapR;
+}
+
 void Cubemap::CreateCubemap()
 {
 	glGenTextures(1, &m_RendererID);
@@ -35,7 +60,7 @@ void Cubemap::CreateCubemap()
 			"No files found." << std::endl;
 		return;
 	}
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load_thread(false);
 	for (unsigned int i = 0; i < m_FilePaths.size(); i++)
 	{
 		int width, height, nrChannels;
@@ -74,11 +99,11 @@ void Cubemap::CreateCubemap()
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, 
 			m_Width[i], m_Height[i], 0, format, GL_UNSIGNED_BYTE, m_LocalBuffer);
 	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, m_MagFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, m_MinFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_WrapS);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_WrapT);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, m_WrapR);
 }
 
 void Cubemap::CreateDepthCubeMap(const int& width, const int& height)
@@ -90,14 +115,14 @@ void Cubemap::CreateDepthCubeMap(const int& width, const int& height)
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT,
 			width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, m_MagFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, m_MinFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_WrapS);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_WrapT);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, m_WrapR);
 }
 
-void Cubemap::CreateHDRCubemap(const int& width, const int& height, GLuint magFilter, GLuint minFilter)
+void Cubemap::CreateHDRCubemap(const int& width, const int& height)
 {
 	m_Width.push_back(width);
 	m_Height.push_back(height);
@@ -108,16 +133,15 @@ void Cubemap::CreateHDRCubemap(const int& width, const int& height, GLuint magFi
 	{
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, nullptr);
 	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, magFilter);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_WrapS);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_WrapT);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, m_WrapR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, m_MagFilter);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, m_MinFilter);
 }
 
 void Cubemap::GenerateMipmap()
 {
-	Bind();
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
