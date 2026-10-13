@@ -34,14 +34,13 @@ void Mesh::SetupMesh()
 	m_EBO->Unbind();
 }
 
-void Mesh::Draw(Shader& shader, const Renderer& renderer, unsigned int instanceCount)
+void Mesh::Draw(Shader& shader, const Renderer& renderer, int texOffset, unsigned int instanceCount)
 {
 	shader.SetUniform1i("textureCount", static_cast<int>(m_Textures.size()));
 	for (unsigned int i = 0; i < m_Textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + i);
-		m_Textures[i]->Bind(i);
-		shader.SetUniform1i("textures[" + std::to_string(i) + "]", i);
+		m_Textures[i]->Bind(i + texOffset);
+		shader.SetUniform1i("textures[" + std::to_string(i) + "]", i + texOffset);
 		shader.SetUniform1i("textureTypes[" + std::to_string(i) + "]", (int)m_Textures[i]->GetType());
 	}
 	renderer.Draw(*m_VAO, *m_EBO, shader, instanceCount);
