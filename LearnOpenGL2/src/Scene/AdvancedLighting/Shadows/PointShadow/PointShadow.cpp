@@ -61,6 +61,8 @@ PointShadow::PointShadow(const SceneContext& context) : Scene3D(context)
 	m_WoodTexture->SyncTexture();
 
 	m_DepthCubeMap = std::make_unique<Cubemap>();
+	m_DepthCubeMap->SetMagFilter(GL_NEAREST);
+	m_DepthCubeMap->SetMinFilter(GL_NEAREST);
 	m_DepthCubeMap->CreateDepthCubeMap(SHADOW_WIDTH, SHADOW_HEIGHT);
 
 	m_DepthMapFBO = std::make_unique<FrameBuffer>();
