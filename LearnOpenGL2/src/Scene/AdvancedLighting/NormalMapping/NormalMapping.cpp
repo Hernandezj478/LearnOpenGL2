@@ -16,8 +16,8 @@ NormalMapping::NormalMapping(const SceneContext& context) : Scene3D(context)
 	m_WallAlbedo = std::make_unique<Texture>("res/textures/brickwall.jpg");
 	m_WallNormal = std::make_unique<Texture>("res/textures/brickwall_normal.jpg");
 	
+	m_WallNormal->SetInvertGreen(true);
 	m_WallNormal->LoadPixels();
-	m_WallNormal->InvertGChannel();
 	m_WallNormal->Upload();
 
 	m_WallAlbedo->SyncTexture();

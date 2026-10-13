@@ -29,8 +29,8 @@ ParallaxMapping::ParallaxMapping(const SceneContext& context) : Scene3D(context)
 	m_WallHeight->SyncTexture();
 
 	m_ToyAlbedo->SyncTexture();
+	m_ToyNormal->SetInvertGreen(true);
 	m_ToyNormal->LoadPixels();
-	m_ToyNormal->InvertGChannel();
 	m_ToyNormal->Upload();
 	m_ToyHeight->SyncTexture();
 
