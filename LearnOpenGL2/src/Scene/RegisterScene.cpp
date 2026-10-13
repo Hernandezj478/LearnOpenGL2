@@ -35,6 +35,11 @@
 #include "AdvancedLighting/HDR/HDR.h"
 #include "AdvancedLighting/Bloom/Bloom.h"
 #include "AdvancedLighting/DeferredShading/DeferredShading.h"
+#include "AdvancedLighting/SSAO/SSAO.h"
+
+#include "PBR/Lighting/PBRLighting.h"
+#include "PBR/IBL/DiffuseIrradiance/DiffuseIrradiance.h"
+#include "PBR/IBL/SpecularIBL/SpecularIBL.h"
 
 void RegisterScenes(SceneRegistry& Registry)
 {
@@ -66,4 +71,9 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<HDR>("Advanced Lighting", "HDR", "");
 	Registry.Register<Bloom>("Advanced Lighting", "Bloom", "");
 	Registry.Register<DeferredShading>("Advanced Lighting", "Deferred Shading", "");
+	Registry.Register<SSAO>("Advanced Lighting", "SSAO", "");
+	Registry.Register<PBRLighting>("PBR", "Lighting", "");
+	Registry.Register<DiffuseIrradiance>("PBR", "Diffuse Irradiance", "");
+	Registry.Register<SpecularIBL>("PBR", "Specular IBL", "");
+
 }

@@ -7,6 +7,7 @@
 
 #include <exception>
 #include <stdexcept>
+#include <iostream>
 
 SceneManager::SceneManager(const SceneRegistry& Registry, const SceneContext& Context) : m_Registry(Registry), m_Context(Context)
 {}
@@ -31,6 +32,7 @@ bool SceneManager::ApplyPending()
 	{
 		ResetGLState();
 		TryLoad(m_Home);
+		std::cerr << m_LastError << "\n";
 	}
 	return true;
 }
