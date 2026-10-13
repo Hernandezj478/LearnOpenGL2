@@ -29,6 +29,8 @@ public:
 	unsigned int GetMeshIndexSize(unsigned int index);
 	void CreateInstance(std::vector<glm::mat4> modelMatrices);
 	void IntanceData(unsigned int index, const VertexBufferLayout& layout);
+	void SetTextureOffset(int offset);
+
 
 	bool operator==(const Model& other)
 	{
@@ -50,4 +52,5 @@ private:
 	std::string GetFileName(const std::string& path);
 	std::unique_ptr<VertexBuffer> m_InstanceBuffer;
 	unsigned int m_InstanceCount = 1;
+	int m_TextureOffset = 0;
 };

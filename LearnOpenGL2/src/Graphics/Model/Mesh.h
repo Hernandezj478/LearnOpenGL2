@@ -24,7 +24,7 @@ public:
 	Mesh& operator=(Mesh&&) = default;
 	void SetupMesh();
 
-	void Draw(Shader& shader, const Renderer& renderer, unsigned int instanceCount = 1);
+	void Draw(Shader& shader, const Renderer& renderer, int texOffset, unsigned int instanceCount = 1);
 	
 	const std::vector<std::shared_ptr<Texture>>& GetTextures() const { return m_Textures; }
 

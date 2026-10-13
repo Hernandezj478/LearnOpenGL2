@@ -32,7 +32,7 @@ void Model::Draw(Shader& shader, const Renderer& renderer)
 	shader.SetUniform1i("bUseInstanceMatrix", useInstance);
 	for (unsigned int i = 0; i < m_Meshes.size(); i++)
 	{
-		m_Meshes[i].Draw(shader, renderer, m_InstanceCount);
+		m_Meshes[i].Draw(shader, renderer, m_TextureOffset, m_InstanceCount);
 	}
 }
 
@@ -77,6 +77,11 @@ void Model::CreateInstance(std::vector<glm::mat4> modelMatrices)
 void Model::IntanceData(unsigned int index, const VertexBufferLayout& layout)
 {
 	m_Meshes[index].GetVAO().AddInstancedBuffer(*m_InstanceBuffer, layout, sizeof(glm::mat4));
+}
+
+void Model::SetTextureOffset(int offset)
+{
+	m_TextureOffset = offset;
 }
 
 void Model::loadModel(std::string path)
@@ -211,13 +216,24 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, const glm::mat4& nod
 	std::vector<std::shared_ptr<Texture>> ambientMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, AMBIENT);
 	textures.insert(textures.end(), ambientMaps.begin(), ambientMaps.end());
 
-	// Ambient Occlusion * NOTE: Might need to remove since AO is multiplied to diffuse
-	std::vector<std::shared_ptr<Texture>> aoMaps = loadMaterialTextures(material, aiTextureType_AMBIENT_OCCLUSION, AO);
-	textures.insert(textures.end(), aoMaps.begin(), aoMaps.end());
+	// Metallic-Roughness-Occlusion
+	std::vector<std::shared_ptr<Texture>> metallicRoughness = loadMaterialTextures(material, aiTextureType_GLTF_METALLIC_ROUGHNESS, METALLIC_ROUGHNESS);
+	textures.insert(textures.end(), metallicRoughness.begin(), metallicRoughness.end());
+	if (metallicRoughness.empty())
+	{
+		// Ambient Occlusion * NOTE: Might need to remove since AO is multiplied to diffuse
+		std::vector<std::shared_ptr<Texture>> aoMaps = loadMaterialTextures(material, aiTextureType_AMBIENT_OCCLUSION, AO);
+		textures.insert(textures.end(), aoMaps.begin(), aoMaps.end());
 
-	// Roughtness Maps
-	std::vector<std::shared_ptr<Texture>> roughness = loadMaterialTextures(material, aiTextureType_DIFFUSE_ROUGHNESS, ROUGHNESS);
-	textures.insert(textures.end(), roughness.begin(), roughness.end());
+		// Roughtness Maps
+		std::vector<std::shared_ptr<Texture>> roughness = loadMaterialTextures(material, aiTextureType_DIFFUSE_ROUGHNESS, ROUGHNESS);
+		textures.insert(textures.end(), roughness.begin(), roughness.end());
+
+		// Metallic Maps
+		std::vector<std::shared_ptr<Texture>> metallic = loadMaterialTextures(material, aiTextureType_METALNESS, METALLIC);
+		textures.insert(textures.end(), metallic.begin(), metallic.end());
+	}
+
 
 	return Mesh(std::move(vertices), std::move(indices), std::move(textures));
 }
