@@ -1,6 +1,8 @@
 #include "BasicLighting.h"
 
 #include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Graphics/Shader.h"
@@ -49,29 +51,30 @@ void BasicLighting::Render()
 void BasicLighting::OnGui()
 {
 	bool changed = false;
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Basic Lights", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	float width = ImGui::GetContentRegionAvail().x;
+	ImGui::TextAligned(0.25f, width, "Ambient Strength");
+	changed |= ImGui::SliderFloat("##Ambient Strength", &m_AmbientStrength, 0.1f, 1.0f);
+	ImGui::Separator();
+	ImGui::TextAligned(0.25f, width, "Specular Strength");
+	changed |= ImGui::SliderFloat("##Specular Strength", &m_SpecularStrength, 0.1f, 1.0f);
+	ImGui::Separator();
+	ImGui::TextAligned(0.25f, width, "Shininess");
+	if (ImGui::BeginCombo("##Shininess", std::to_string(m_Shininess).c_str()))
 	{
-		changed |= ImGui::SliderFloat("Ambient Strength", &m_AmbientStrength, 0.1f, 1.0f);
-		changed |= ImGui::SliderFloat("Specular Strength", &m_SpecularStrength, 0.1f, 1.0f);
-		if (ImGui::BeginCombo("Shininess", std::to_string(m_Shininess).c_str()))
+		for (int i = 0; i < m_ShininessValues.size(); i++)
 		{
-			for (int i = 0; i < m_ShininessValues.size(); i++)
+			if (ImGui::Selectable(std::to_string(m_ShininessValues[i]).c_str(), m_ShininessValues[i] == m_Shininess))
 			{
-				if (ImGui::Selectable(std::to_string(m_ShininessValues[i]).c_str(), m_ShininessValues[i] == m_Shininess))
-				{
-					m_Shininess = m_ShininessValues[i];
-					changed = true;
-				}
+				m_Shininess = m_ShininessValues[i];
+				changed = true;
 			}
-			ImGui::EndCombo();
 		}
-		if (changed)
-		{
-			m_LightsDirty = true;
-		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	if (changed)
+	{
+		m_LightsDirty = true;
+	}
 }
 
 void BasicLighting::UpdateLighting()

@@ -132,26 +132,21 @@ void GeometryShader::Update(float deltaTime)
 
 void GeometryShader::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("DEBUG", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginCombo("Shader selection", m_OptionMap[m_SceneOption].c_str()))
 	{
-		if (ImGui::BeginCombo("Shader selection", m_OptionMap[m_SceneOption].c_str()))
+		for (auto option : m_OptionMap)
 		{
-			for (auto option : m_OptionMap)
+			bool selected = (option.second == m_OptionMap[m_SceneOption]);
+			if (ImGui::Selectable(option.second.c_str(), selected))
 			{
-				bool selected = (option.second == m_OptionMap[m_SceneOption]);
-				if (ImGui::Selectable(option.second.c_str(), selected))
-				{
-					m_SceneOption = option.first;
-				}
+				m_SceneOption = option.first;
 			}
-			ImGui::EndCombo();
 		}
-		if (m_Loader.HasPending())
-		{
-			ImGui::Separator();
-			ImGui::Text("Loading Models...");
-		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	if (m_Loader.HasPending())
+	{
+		ImGui::Separator();
+		ImGui::Text("Loading Models...");
+	}
 }

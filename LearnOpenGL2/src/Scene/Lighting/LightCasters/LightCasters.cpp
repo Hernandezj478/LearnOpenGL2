@@ -117,31 +117,26 @@ void LightCasters::Render()
 
 void LightCasters::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Light Casters", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		std::string selected = (m_LightSelection == DIRECTIONAL) ? "Directional"
-			: (m_LightSelection == POINT) ? "Point" : "Spot";
+	std::string selected = (m_LightSelection == DIRECTIONAL) ? "Directional"
+		: (m_LightSelection == POINT) ? "Point" : "Spot";
 
-		ImGui::Text("Light Selected: %s", selected.c_str());
-		ImGui::Separator();
-		if (ImGui::Button("Directional Light"))
-		{
-			m_LightSelection = DIRECTIONAL;
-			bLightDirty = true;
-		}
-		if (ImGui::Button("Point Light"))
-		{
-			m_LightSelection = POINT;
-			bLightDirty = true;
-		}
-		if (ImGui::Button("Spot Light"))
-		{
-			m_LightSelection = SPOT;
-			bLightDirty = true;
-		}
+	ImGui::Text("Light Selected: %s", selected.c_str());
+	ImGui::Separator();
+	if (ImGui::Button("Directional Light"))
+	{
+		m_LightSelection = DIRECTIONAL;
+		bLightDirty = true;
 	}
-	ImGui::End();
+	if (ImGui::Button("Point Light"))
+	{
+		m_LightSelection = POINT;
+		bLightDirty = true;
+	}
+	if (ImGui::Button("Spot Light"))
+	{
+		m_LightSelection = SPOT;
+		bLightDirty = true;
+	}
 }
 
 void LightCasters::LoadDirectionalLights()

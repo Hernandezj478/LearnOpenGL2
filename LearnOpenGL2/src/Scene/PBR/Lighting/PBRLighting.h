@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/Scene3D.h"
+#include "Core/AsyncLoader.h"
 
 #include <memory>
 #include <vector>
@@ -19,6 +20,7 @@ public:
 	~PBRLighting() = default;
 
 	void Render() override;
+	void Update(float deltaTime) override;
 	void OnGui() override;
 private:
 	enum SceneType
@@ -46,11 +48,13 @@ private:
 	std::map<SceneType, std::string> m_SceneSelection;
 	SceneType m_SelectedScene = TEXTURE;
 
+	AsyncLoader<std::unique_ptr<Model>> m_ModelLoader;
+
 	int m_Rows = 7; 
 	int m_Cols = 7;
 	float m_Spacing = 2.5f;
 	bool m_UseGamma = true;
-
+	std::string m_LastError = "";
 
 	void BasicPBR();
 	void TexturedPBR();

@@ -180,11 +180,6 @@ void Bloom::Render()
 
 void Bloom::OnGui()
 {
-	ImGui::SetNextWindowSize(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Bloom", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		ImGui::Checkbox("Bloom", &m_UseBloom);
-		ImGui::SliderFloat("Exposure", &m_Exposure, 0.1f, 10.0f);
-	}
-	ImGui::End();
+	ImGui::Checkbox("Bloom", &m_UseBloom);
+	ImGui::SliderFloat("Exposure", &m_Exposure, 0.1f, 10.0f);
 }

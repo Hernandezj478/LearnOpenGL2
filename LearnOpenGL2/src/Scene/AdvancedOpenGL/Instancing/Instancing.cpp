@@ -166,21 +166,16 @@ void Instancing::Update(float deltaTime)
 
 void Instancing::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Instancing", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginCombo("Instance scene", m_SceneMap[m_CurrentSelection].c_str()))
 	{
-		if (ImGui::BeginCombo("Instance scene", m_SceneMap[m_CurrentSelection].c_str()))
+		for (auto scene : m_SceneMap)
 		{
-			for (auto scene : m_SceneMap)
+			bool selected = (scene.first == m_CurrentSelection);
+			if (ImGui::Selectable(scene.second.c_str(), selected))
 			{
-				bool selected = (scene.first == m_CurrentSelection);
-				if (ImGui::Selectable(scene.second.c_str(), selected))
-				{
-					m_CurrentSelection = scene.first;
-				}
+				m_CurrentSelection = scene.first;
 			}
-			ImGui::EndCombo();
 		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
 }

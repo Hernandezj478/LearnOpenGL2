@@ -10,7 +10,8 @@ ImGuiLayer::ImGuiLayer(Window& window)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGui::GetIO().IniFilename = nullptr;
+	ImGui::GetIO().IniFilename = "Editor_Layout.ini";
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window.Handle(), true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -41,16 +42,3 @@ bool ImGuiLayer::WantsMouse() const
 	return ImGui::GetIO().WantCaptureMouse;
 }
 
-void ImGuiLayer::DrawFPSOverlay(const int& fps)
-{
-	const ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 10.0f, 20.0f), ImGuiCond_Always, ImVec2(1.0f, 1.0f));
-	ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse
-		| ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing;
-	ImGui::SetNextWindowBgAlpha(0.1f);
-	if (ImGui::Begin("FPS", nullptr, flags))
-	{
-		ImGui::Text("FPS: %d", fps);
-	}
-	ImGui::End();
-}

@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "UI/ImGuiLayer.h"
-#include "UI/MenuUI.h"
+#include "UI/UILayer.h"
 #include "Graphics/Renderer.h"
 #include "Scene/SceneRegistry.h"
 #include "Scene/SceneContext.h"
@@ -23,7 +23,8 @@ private:
 	Window m_Window;
 	Input m_Input;
 	ImGuiLayer m_ImGui;
-	MenuUI m_Menu;
+	//MenuUI m_Menu;
+	UILayer m_UI;
 	Renderer m_Renderer;
 	SceneRegistry m_Registry;
 	SceneContext m_Context;
@@ -34,9 +35,11 @@ private:
 
 	double m_LastFrame = 0.0;
 	float m_DeltaTime = 0.0f;
+
 	int m_FrameCount = 0;
 	float m_FPSTimer = 0.0f;
 	int m_FPS = 0;
+	double m_ElapsedTime = 0.0;
 
 	glm::ivec2 FrameSize{0.0f, 0.0f};
 	std::optional<glm::ivec2> m_PendingResize;
@@ -52,4 +55,5 @@ private:
 	void DrawUI();	// menu + scene panel, collects UI request bundle
 	void EndFrame();	// restore FBO + viewport, render ImGUI, swap
 	void UpdateCursorMode();
+	void CalculateFPS();
 };

@@ -220,12 +220,7 @@ void SSAO::Render()
 
 void SSAO::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("SSAO Testing", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		ImGui::Checkbox("SSAO", &m_UseSSAO);
-	}
-	ImGui::End();
+	ImGui::Checkbox("SSAO", &m_UseSSAO);
 }
 
 float SSAO::lerp(float a, float b, float f)

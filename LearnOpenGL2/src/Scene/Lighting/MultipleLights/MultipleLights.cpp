@@ -1,6 +1,8 @@
 #include "MultipleLights.h"
 
 #include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Graphics/Shader.h"
@@ -113,60 +115,65 @@ void MultipleLights::Render()
 
 void MultipleLights::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Multiple Lights", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	bool changed = false;
+	float width = ImGui::GetContentRegionAvail().x;
+	ImGui::TextAligned(0.25, width, "Environment");
+	if (ImGui::BeginCombo("##Environment", sceneNames[m_SceneSelect]))
 	{
-		bool changed = false;
-		if (ImGui::BeginCombo("Environment", sceneNames[m_SceneSelect]))
+		for (int i = 0; i < static_cast<int>(std::size(sceneNames)); i++)
 		{
-			for (int i = 0; i < static_cast<int>(std::size(sceneNames)); i++)
+			const bool isSelected = (i == m_SceneSelect);
+			if (ImGui::Selectable(sceneNames[i], isSelected))
 			{
-				const bool isSelected = (i == m_SceneSelect);
-				if (ImGui::Selectable(sceneNames[i], isSelected))
-				{
-					m_SceneSelect = static_cast<SceneType>(i);
-					changed = true;
-				}
-				if (isSelected)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
+				m_SceneSelect = static_cast<SceneType>(i);
+				changed = true;
 			}
-			ImGui::EndCombo();
-		}
-		ImGui::Separator();
-		ImGui::Text("Light Casters");
-		changed |= ImGui::Checkbox("Directional Light", &m_DirectionalOn);
-		changed |= ImGui::Checkbox("Point Lights", &m_PointLightsOn);
-
-		ImGui::Separator();
-
-		if (ImGui::BeginCombo("Point light range", std::to_string(m_LightRange).c_str()))
-		{
-			for (const auto& entry : m_LightFalloffValues)
+			if (isSelected)
 			{
-				if (ImGui::Selectable(std::to_string(entry.first).c_str(), entry.first == m_LightRange))
-				{
-					m_LightRange = entry.first;
-					changed = true;
-				}
+				ImGui::SetItemDefaultFocus();
 			}
-			ImGui::EndCombo();
 		}
-		ImGui::SliderFloat("Marker brightness", &m_Brightness, 0.0, 20.0f);
-
-		ImGui::Separator();
-		ImGui::Text("Light Strength");
-		changed |= ImGui::SliderFloat("Ambient", &m_AmbientStrength, 0.0f, maxStrength);
-		changed |= ImGui::SliderFloat("Diffuse", &m_DiffuseStrength, 0.0f, maxStrength);
-		changed |= ImGui::SliderFloat("Specular", &m_SpecularStrength, 0.0f, maxStrength);
-
-		if (changed)
-		{
-			m_LightsDirty = true;
-		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	ImGui::Separator();
+	ImGui::TextAligned(0.25, width, "Light Casters");
+	//ImGui::Text("Light Casters");
+	changed |= ImGui::Checkbox("Directional Light", &m_DirectionalOn);
+	ImGui::Separator();
+	changed |= ImGui::Checkbox("Point Lights", &m_PointLightsOn);
+
+	ImGui::Separator();
+	ImGui::TextAligned(0.25, width, "Point light range");
+	if (ImGui::BeginCombo("##Point light range", std::to_string(m_LightRange).c_str()))
+	{
+		for (const auto& entry : m_LightFalloffValues)
+		{
+			if (ImGui::Selectable(std::to_string(entry.first).c_str(), entry.first == m_LightRange))
+			{
+				m_LightRange = entry.first;
+				changed = true;
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
+	ImGui::TextAligned(0.25, width, "Marker brightness");
+	ImGui::SliderFloat("##Marker brightness", &m_Brightness, 0.0, 20.0f);
+
+	ImGui::Separator();
+	ImGui::TextAligned(0.25, width, "Light Strength");
+	ImGui::Separator();
+	ImGui::TextAligned(0.25, width, "Ambient");
+	changed |= ImGui::SliderFloat("##Ambient", &m_AmbientStrength, 0.0f, maxStrength);
+	ImGui::TextAligned(0.25, width, "Diffuse");
+	changed |= ImGui::SliderFloat("##Diffuse", &m_DiffuseStrength, 0.0f, maxStrength);
+	ImGui::TextAligned(0.25, width, "Specular");
+	changed |= ImGui::SliderFloat("##Specular", &m_SpecularStrength, 0.0f, maxStrength);
+
+	if (changed)
+	{
+		m_LightsDirty = true;
+	}
 }
 
 void MultipleLights::SetLightColors()

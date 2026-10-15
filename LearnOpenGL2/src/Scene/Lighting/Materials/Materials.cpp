@@ -97,31 +97,26 @@ void Materials::Render()
 
 void Materials::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Materials", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+	ImGui::BeginDisabled(bUseMaterial);
+	ImGui::Checkbox("Party Lights", &bUsePartyLights);
+	ImGui::EndDisabled();
+	ImGui::Separator();
+	ImGui::Checkbox("Change cube material", &bUseMaterial);
+	if (bUseMaterial)
 	{
-		ImGui::BeginDisabled(bUseMaterial);
-		ImGui::Checkbox("Party Lights", &bUsePartyLights);
-		ImGui::EndDisabled();
-		ImGui::Separator();
-		ImGui::Checkbox("Change cube material", &bUseMaterial);
-		if (bUseMaterial)
-		{
-			bUsePartyLights = false;
-		}
-		ImGui::TextDisabled("Material List");
-		if (ImGui::BeginCombo("##Material", m_MaterialSelection.c_str()))
-		{
-			for (auto& material : MaterialLibrary)
-			{
-				if (ImGui::Selectable(material.first.c_str(), material.first == m_MaterialSelection))
-				{
-					m_MaterialSelection = material.first;
-					m_Material = material.second;
-				}
-			}
-			ImGui::EndCombo();
-		}
+		bUsePartyLights = false;
 	}
-	ImGui::End();
+	ImGui::TextDisabled("Material List");
+	if (ImGui::BeginCombo("##Material", m_MaterialSelection.c_str()))
+	{
+		for (auto& material : MaterialLibrary)
+		{
+			if (ImGui::Selectable(material.first.c_str(), material.first == m_MaterialSelection))
+			{
+				m_MaterialSelection = material.first;
+				m_Material = material.second;
+			}
+		}
+		ImGui::EndCombo();
+	}
 }

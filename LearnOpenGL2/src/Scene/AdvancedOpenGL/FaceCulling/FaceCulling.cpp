@@ -54,34 +54,29 @@ void FaceCulling::Render()
 
 void FaceCulling::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Face Culling Test", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if(ImGui::BeginCombo("Face Culling Type", m_CullMap[m_FaceCullSelection].c_str()))
 	{
-		if(ImGui::BeginCombo("Face Culling Type", m_CullMap[m_FaceCullSelection].c_str()))
+		for (auto it : m_CullMap)
 		{
-			for (auto it : m_CullMap)
+			bool isSelected = (it.first == m_FaceCullSelection);
+			if (ImGui::Selectable(it.second.c_str(), isSelected))
 			{
-				bool isSelected = (it.first == m_FaceCullSelection);
-				if (ImGui::Selectable(it.second.c_str(), isSelected))
-				{
-					m_FaceCullSelection = it.first;
-				}
+				m_FaceCullSelection = it.first;
 			}
-			ImGui::EndCombo();
 		}
-		ImGui::Separator();
-		if (ImGui::BeginCombo("Winding Type", m_WindMap[m_WindingSelection].c_str()))
-		{
-			for (auto it : m_WindMap)
-			{
-				bool isSelected = (it.first == m_WindingSelection);
-				if (ImGui::Selectable(it.second.c_str(), isSelected))
-				{
-					m_WindingSelection = it.first;
-				}
-			}
-			ImGui::EndCombo();
-		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	ImGui::Separator();
+	if (ImGui::BeginCombo("Winding Type", m_WindMap[m_WindingSelection].c_str()))
+	{
+		for (auto it : m_WindMap)
+		{
+			bool isSelected = (it.first == m_WindingSelection);
+			if (ImGui::Selectable(it.second.c_str(), isSelected))
+			{
+				m_WindingSelection = it.first;
+			}
+		}
+		ImGui::EndCombo();
+	}
 }

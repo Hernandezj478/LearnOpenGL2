@@ -81,21 +81,12 @@ void ModelLoading::Update(float deltaTime)
 
 void ModelLoading::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
 	if (m_Loader.HasPending())
 	{
-		if (ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-		{
-			ImGui::Text("Loading models...");
-		}
-		ImGui::End();
+		ImGui::Text("Loading models...");
 	}
 	if (!m_LastLoadError.empty())
 	{
-		if (ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-		{
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "%s", m_LastLoadError.c_str());
-		}
-		ImGui::End();
+		ImGui::TextColored(ImVec4(1, 0, 0, 1), "%s", m_LastLoadError.c_str());
 	}
 }

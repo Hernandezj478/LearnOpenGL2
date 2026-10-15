@@ -4,7 +4,7 @@
 #include "Graphics/ColorPalette.h"
 
 Application::Application() : 
-	m_Input(m_Window), m_ImGui(m_Window), m_Menu(m_Window.MonitorSize()),
+	m_Input(m_Window), m_ImGui(m_Window), m_UI(m_Window.MonitorSize()),
 	m_Context{m_Window, m_Input, m_Renderer, std::filesystem::current_path() / "res"}, 
 	m_SceneManager(m_Registry, m_Context)
 {}
@@ -21,19 +21,17 @@ void Application::Run()
 		{
 			continue;
 		}
-		if (m_Input.IsPressed(GLFW_KEY_ESCAPE))
-		{
-			m_Menu.OnEscape();
-		}
+		CalculateFPS();
+		double start = glfwGetTime();
 		UpdateCursorMode();
 
 		m_SceneManager.Update(m_DeltaTime);
 		m_SceneManager.Render();
+		
+		double end = glfwGetTime();
+		m_ElapsedTime = (end - start) * 1e3;
+		
 		DrawUI();
-		if (!m_Menu.IsOpen())
-		{
-			m_SceneManager.OnGui();
-		}
 		EndFrame();
 	}
 }
@@ -42,16 +40,6 @@ bool Application::BeginFrame()
 {
 	// Start the ImGui frame
 	m_ImGui.BeginFrame();
-
-	m_FrameCount++;
-	m_FPSTimer += m_DeltaTime;
-	if (m_FPSTimer >= 1.0f)
-	{
-		m_FPS = m_FrameCount;
-		m_FrameCount = 0;
-		m_FPSTimer -= 1.0f;
-	}
-	m_ImGui.DrawFPSOverlay(m_FPS);
 
 	ApplyPendingRequest();
 	m_Input.NewFrame();
@@ -94,7 +82,7 @@ void Application::ApplyPendingRequest()
 
 void Application::DrawUI()
 {
-	const UIRequests requests = m_Menu.Draw(m_Window.FramebufferSize(), m_Registry, m_SceneManager.CurrentIndex());
+	const UIRequests requests = m_UI.Draw(m_Registry, m_SceneManager, m_Window.FramebufferSize(), m_FPS, m_ElapsedTime);
 	if (requests.Quit)
 	{
 		m_Window.RequestClose();
@@ -123,11 +111,6 @@ void Application::EndFrame()
 
 void Application::UpdateCursorMode()
 {
-	if (m_Menu.IsOpen())
-	{
-		m_Input.SetCursorCaptured(false);
-		return;
-	}
 	if (m_Input.IsCursorCaptured())
 	{
 		if (!m_Input.MouseDown(GLFW_MOUSE_BUTTON_RIGHT))
@@ -138,5 +121,17 @@ void Application::UpdateCursorMode()
 	else if (m_Input.MousePressed(GLFW_MOUSE_BUTTON_RIGHT) && !m_ImGui.WantsMouse())
 	{
 		m_Input.SetCursorCaptured(true);
+	}
+}
+
+void Application::CalculateFPS()
+{
+	m_FrameCount++;
+	m_FPSTimer += m_DeltaTime;
+	if (m_FPSTimer >= 1.0f)
+	{
+		m_FPS = m_FrameCount;
+		m_FrameCount = 0;
+		m_FPSTimer -= 1.0f;
 	}
 }

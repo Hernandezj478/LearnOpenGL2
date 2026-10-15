@@ -15,7 +15,11 @@ PBRLighting::PBRLighting(const SceneContext& context) : Scene3D(context)
 {
 	glEnable(GL_DEPTH_TEST);
 
-	m_Backpack = std::make_unique<Model>("res/meshes/Backpack/Backpack.gltf");
+	m_ModelLoader.Request(
+		[]() -> std::unique_ptr<Model>
+		{
+			return std::make_unique<Model>("res/meshes/Backpack/Backpack.gltf");
+		});
 	m_Sphere = std::make_unique<Sphere>();
 	m_Light = std::make_unique<LightMarker>();
 
@@ -34,8 +38,6 @@ PBRLighting::PBRLighting(const SceneContext& context) : Scene3D(context)
 	m_Metallic->SyncTexture();
 	m_Roughness->SyncTexture();
 	m_AO->SyncTexture();
-
-	m_Backpack->Finalize();
 
 	m_LightData.push_back({ glm::vec3(-10.0f,  10.0f, 10.0f), glm::vec3(300.0f, 300.0f, 300.0f) });
 	m_LightData.push_back({ glm::vec3( 10.0f,  10.0f, 10.0f), glm::vec3(300.0f, 300.0f, 300.0f) });
@@ -75,27 +77,50 @@ void PBRLighting::Render()
 	}
 }
 
+void PBRLighting::Update(float deltaTime)
+{
+	Scene3D::Update(deltaTime);
+
+	m_ModelLoader.Update(
+		[this](std::unique_ptr<Model> model)
+		{
+			model->Finalize();
+			m_Backpack = std::move(model);
+		},
+		[this](const std::exception& e)
+		{
+			m_LastError = e.what();
+		}
+	);
+	if (!m_LastError.empty())
+	{
+		std::string msg = m_LastError;
+		m_LastError.clear();
+		throw std::runtime_error(msg);
+	}
+}
+
 void PBRLighting::OnGui()
 {
-	ImGui::SetNextWindowSize(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("PBR", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	ImGui::Checkbox("Gamma Correction", &m_UseGamma);
+	ImGui::Separator();
+	if (ImGui::BeginCombo("Scene Selection", m_SceneSelection[m_SelectedScene].c_str()))
 	{
-		ImGui::Checkbox("Gamma Correction", &m_UseGamma);
-		ImGui::Separator();
-		if (ImGui::BeginCombo("Scene Selection", m_SceneSelection[m_SelectedScene].c_str()))
+		for (auto scene : m_SceneSelection)
 		{
-			for (auto scene : m_SceneSelection)
+			bool selected = (m_SelectedScene == scene.first);
+			if (ImGui::Selectable(scene.second.c_str(), selected))
 			{
-				bool selected = (m_SelectedScene == scene.first);
-				if (ImGui::Selectable(scene.second.c_str(), selected))
-				{
-					m_SelectedScene = scene.first;
-				}
+				m_SelectedScene = scene.first;
 			}
-			ImGui::EndCombo();
 		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	if (m_ModelLoader.HasPending())
+	{
+		ImGui::Separator();
+		ImGui::TextDisabled("Loading models...");
+	}
 }
 
 void PBRLighting::BasicPBR()

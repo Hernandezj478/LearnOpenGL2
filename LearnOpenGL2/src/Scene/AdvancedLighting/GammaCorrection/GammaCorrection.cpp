@@ -75,14 +75,9 @@ void GammaCorrection::Render()
 
 void GammaCorrection::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Gamma Correction", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		ImGui::Checkbox("Use Gamma", &m_UseGamma);
-		ImGui::Checkbox("Use Linear Gamma Correction", &m_UseLinearGamma);
-		ImGui::Separator();
-		ImGui::Text("CTRL + LMB to manually enter value");
-		ImGui::SliderFloat("UV Scale", &m_UVScale, 1.0f, 10.0f);
-	}
-	ImGui::End();
+	ImGui::Checkbox("Use Gamma", &m_UseGamma);
+	ImGui::Checkbox("Use Linear Gamma Correction", &m_UseLinearGamma);
+	ImGui::Separator();
+	ImGui::Text("CTRL + LMB to manually enter value");
+	ImGui::SliderFloat("UV Scale", &m_UVScale, 1.0f, 10.0f);
 }

@@ -171,22 +171,17 @@ void Blending::Render()
 
 void Blending::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::InputInt("Grass Count", &m_GrassCount))
 	{
-		if (ImGui::InputInt("Grass Count", &m_GrassCount))
-		{
-			bGrassCountUpdate = true;
-		}
-		if (ImGui::InputInt("Window Count", &m_WindowCount))
-		{
-			bWindowCountUpdate = true;
-		}
-		if (ImGui::InputInt("Ground Size", &m_GroundSize))
-		{
-			bGrassCountUpdate = true;
-			bWindowCountUpdate = true;
-		}
+		bGrassCountUpdate = true;
 	}
-	ImGui::End();
+	if (ImGui::InputInt("Window Count", &m_WindowCount))
+	{
+		bWindowCountUpdate = true;
+	}
+	if (ImGui::InputInt("Ground Size", &m_GroundSize))
+	{
+		bGrassCountUpdate = true;
+		bWindowCountUpdate = true;
+	}
 }

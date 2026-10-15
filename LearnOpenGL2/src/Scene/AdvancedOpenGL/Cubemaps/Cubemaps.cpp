@@ -190,11 +190,6 @@ void Cubemaps::Update(float deltaTime)
 
 void Cubemaps::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Cubemaps", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		ImGui::Text("F1 Wireframe Mode");
-		ImGui::Checkbox("Wireframe", &bWireframeMode);
-	}
-	ImGui::End();
+	ImGui::Text("F1 Wireframe Mode");
+	ImGui::Checkbox("Wireframe", &bWireframeMode);
 }

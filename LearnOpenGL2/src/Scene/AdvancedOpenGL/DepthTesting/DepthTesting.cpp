@@ -93,17 +93,12 @@ void DepthTesting::Render()
 
 void DepthTesting::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	ImGui::Checkbox("Depth Test", &m_DepthTest);
+	if (m_DepthTest)
 	{
-		ImGui::Checkbox("Depth Test", &m_DepthTest);
-		if (m_DepthTest)
-		{
-			ImGui::Separator();
-			ImGui::Text("CTRL+LMB to manually enter value");
-			ImGui::SliderFloat("Near Z-Depth", &m_ZNear, 0.01f, 1.0f);
-			ImGui::SliderFloat("Far Z-Depth", &m_ZFar, 1.0f, 50.0f);
-		}
+		ImGui::Separator();
+		ImGui::Text("CTRL+LMB to manually enter value");
+		ImGui::SliderFloat("Near Z-Depth", &m_ZNear, 0.01f, 1.0f);
+		ImGui::SliderFloat("Far Z-Depth", &m_ZFar, 1.0f, 50.0f);
 	}
-	ImGui::End();
 }

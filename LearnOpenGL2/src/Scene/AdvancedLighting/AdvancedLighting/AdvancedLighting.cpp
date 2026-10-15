@@ -71,22 +71,17 @@ void AdvancedLighting::Render()
 
 void AdvancedLighting::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Advanced Lighting", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	ImGui::Checkbox("Blinn-Phong", &bBlinnPhong);
+	if (ImGui::BeginCombo("Light Type", m_LightTypeMap[m_LightSelection].c_str()))
 	{
-		ImGui::Checkbox("Blinn-Phong", &bBlinnPhong);
-		if (ImGui::BeginCombo("Light Type", m_LightTypeMap[m_LightSelection].c_str()))
+		for (auto light : m_LightTypeMap)
 		{
-			for (auto light : m_LightTypeMap)
+			bool selected = (light.first == m_LightSelection);
+			if (ImGui::Selectable(light.second.c_str(), selected))
 			{
-				bool selected = (light.first == m_LightSelection);
-				if (ImGui::Selectable(light.second.c_str(), selected))
-				{
-					m_LightSelection = light.first;
-				}
+				m_LightSelection = light.first;
 			}
-			ImGui::EndCombo();
 		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
 }

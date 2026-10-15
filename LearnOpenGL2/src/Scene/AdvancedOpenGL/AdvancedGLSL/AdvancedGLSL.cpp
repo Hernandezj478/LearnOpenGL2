@@ -119,28 +119,23 @@ void AdvancedGLSL::Render()
 
 void AdvancedGLSL::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Advanced GLSL", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	std::string selected = "Current selection: " + m_Map[m_DrawType];
+	ImGui::Text(selected.c_str());
+	if (ImGui::BeginCombo("Draw Type", m_Map[m_DrawType].c_str()))
 	{
-		std::string selected = "Current selection: " + m_Map[m_DrawType];
-		ImGui::Text(selected.c_str());
-		if (ImGui::BeginCombo("Draw Type", m_Map[m_DrawType].c_str()))
+		for (auto choice : m_Map)
 		{
-			for (auto choice : m_Map)
+			bool selected = (choice.second == m_Map[m_DrawType]);
+			if (ImGui::Selectable(choice.second.c_str(), selected))
 			{
-				bool selected = (choice.second == m_Map[m_DrawType]);
-				if (ImGui::Selectable(choice.second.c_str(), selected))
-				{
-					m_DrawType = choice.first;
-				}
+				m_DrawType = choice.first;
 			}
-			ImGui::EndCombo();
 		}
-		if (m_DrawType == FRONT)
-		{
-			ImGui::Separator();
-			ImGui::Text("Whats in the box?");
-		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	if (m_DrawType == FRONT)
+	{
+		ImGui::Separator();
+		ImGui::Text("Whats in the box?");
+	}
 }

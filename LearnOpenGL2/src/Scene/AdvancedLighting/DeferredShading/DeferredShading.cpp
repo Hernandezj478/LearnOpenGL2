@@ -142,23 +142,18 @@ void DeferredShading::Render()
 
 void DeferredShading::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Deferred Shading", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if (ImGui::BeginCombo("Scene selection", m_SceneSelection[m_CurrentSelection].c_str()))
 	{
-		if (ImGui::BeginCombo("Scene selection", m_SceneSelection[m_CurrentSelection].c_str()))
+		for (auto selection : m_SceneSelection)
 		{
-			for (auto selection : m_SceneSelection)
+			bool isSelected = (m_CurrentSelection == selection.first);
+			if (ImGui::Selectable(selection.second.c_str(), isSelected))
 			{
-				bool isSelected = (m_CurrentSelection == selection.first);
-				if (ImGui::Selectable(selection.second.c_str(), isSelected))
-				{
-					m_CurrentSelection = selection.first;
-				}
+				m_CurrentSelection = selection.first;
 			}
-			ImGui::EndCombo();
 		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
 }
 
 void DeferredShading::DrawDeferredTest()

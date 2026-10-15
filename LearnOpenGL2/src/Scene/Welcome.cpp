@@ -14,14 +14,15 @@ void WelcomeScene::Render()
 void WelcomeScene::OnGui()
 {
 	const ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f - 12.0f, io.DisplaySize.y * 0.5f),
+	ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f),
 		ImGuiCond_Always, ImVec2(1.0f, 0.5f));
 	ImGui::SetNextWindowSize(ImVec2(480.0f, 0.0f));
 
 	const ImGuiWindowFlags flags = ImGuiWindowFlags_NoResize
 		| ImGuiWindowFlags_NoMove
 		| ImGuiWindowFlags_NoCollapse
-		| ImGuiWindowFlags_NoSavedSettings;
+		| ImGuiWindowFlags_NoSavedSettings
+		| ImGuiWindowFlags_NoDocking;
 
 	if (ImGui::Begin("Welcome", nullptr, flags))
 	{
@@ -32,7 +33,6 @@ void WelcomeScene::OnGui()
 
 		ImGui::Separator();
 		ImGui::Text("Controls");
-		ImGui::BulletText("ESC: Open or close the menu");
 		ImGui::BulletText("Hold RMB: Fly camera in 3D scene");
 		ImGui::BulletText("W/S/A/D: Move camera ");
 		ImGui::BulletText("Q/E: Move up and down");

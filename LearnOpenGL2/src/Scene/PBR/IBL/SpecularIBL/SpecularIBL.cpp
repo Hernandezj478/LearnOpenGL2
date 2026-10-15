@@ -31,8 +31,11 @@ SpecularIBL::SpecularIBL(const SceneContext& context) : Scene3D(context)
 	m_Skybox = std::make_unique<Skybox>();
 	m_ScreenQuad = std::make_unique<Plane2D>();
 
-	m_Backpack = std::make_unique<Model>("res/meshes/Backpack/Backpack.gltf");
-	m_Backpack->Finalize();
+	m_ModelLoader.Request(
+		[]() -> std::unique_ptr<Model>
+		{
+			return std::make_unique<Model>("res/meshes/Backpack/Backpack.gltf");
+		});
 
 	m_LoftRoom = std::make_unique<Texture>("res/textures/HDR/newport_loft.hdr");
 	m_LoftRoom->SetHDR(true);
@@ -228,7 +231,6 @@ void SpecularIBL::Render()
 		RenderModelScene();
 	}
 
-
 	m_EnvShader->Bind();
 	m_EnvShader->SetUniformMat4f("projection", projection);
 	m_EnvShader->SetUniformMat4f("view", view);
@@ -236,99 +238,162 @@ void SpecularIBL::Render()
 	m_Skybox->Draw(*m_EnvShader, m_Context.Renderer);
 }
 
+void SpecularIBL::Update(float deltaTime)
+{
+	Scene3D::Update(deltaTime);
+	m_ModelLoader.Update(
+		[this](std::unique_ptr<Model> model)
+		{
+			model->Finalize();
+			m_Backpack = std::move(model);
+		},
+		[this](const std::exception& e)
+		{
+			m_LastError = e.what();
+		}
+	);
+	if (!m_LastError.empty())
+	{
+		std::string msg = m_LastError;
+		m_LastError.clear();
+		throw std::runtime_error(msg);
+	}
+
+	m_TextureLoader.Update(
+		[this](TextureMap map)
+		{
+			map.at("albedo")->SetHDR(true);
+			map.at("albedo")->SetFlipImage(false);
+			//m_SphereTextures[i].at("albedo")->SetGammaCorrection(true);
+			map.at("albedo")->SyncTexture();
+
+			//m_SphereTextures[i].at("normal")->SetHDR(true);
+			map.at("normal")->SetFlipImage(false);
+			//m_SphereTextures[i].at("normal")->SetGammaCorrection(true);
+			map.at("normal")->SyncTexture();
+
+			//m_SphereTextures[i].at("metallic")->SetHDR(true);
+			map.at("metallic")->SetFlipImage(false);
+			//m_SphereTextures[i].at("metallic")->SetGammaCorrection(true);
+			map.at("metallic")->SyncTexture();
+
+			//m_SphereTextures[i].at("roughness")->SetHDR(true);
+			map.at("roughness")->SetFlipImage(false);
+			//m_SphereTextures[i].at("roughness")->SetGammaCorrection(true);
+			map.at("roughness")->SyncTexture();
+
+			//m_SphereTextures[i].at("ao")->SetHDR(true);
+			map.at("ao")->SetFlipImage(false);
+			//m_SphereTextures[i].at("ao")->SetGammaCorrection(true);
+			map.at("ao")->SyncTexture();
+
+			m_SphereTextures.push_back(map);
+		},
+		[this](const std::exception& e)
+		{
+			m_LastError = e.what();
+			if (!m_LastError.empty())
+			{
+				std::string msg = m_LastError;
+				m_LastError.clear();
+				throw std::runtime_error(msg);
+			}
+		}
+	);
+}
+
 void SpecularIBL::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Specular IBL", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	if(ImGui::BeginCombo("Select Scene", m_SceneMap[m_SelectedScene].c_str()))
 	{
-		if(ImGui::BeginCombo("Select Scene", m_SceneMap[m_SelectedScene].c_str()))
+		for (auto scene : m_SceneMap)
 		{
-			for (auto scene : m_SceneMap)
+			bool selected = (m_SelectedScene == scene.first);
+			if (ImGui::Selectable(scene.second.c_str(), selected))
 			{
-				bool selected = (m_SelectedScene == scene.first);
-				if (ImGui::Selectable(scene.second.c_str(), selected))
-				{
-					m_SelectedScene = scene.first;
-				}
+				m_SelectedScene = scene.first;
 			}
-			ImGui::EndCombo();
 		}
+		ImGui::EndCombo();
 	}
-	ImGui::End();
+	if (m_TextureLoader.HasPending())
+	{
+		ImGui::Separator();
+		ImGui::TextDisabled("Loading Textures...");
+	}
+	if (m_ModelLoader.HasPending())
+	{
+		ImGui::Separator();
+		ImGui::TextDisabled("Loading Models...");
+	}
 }
 
 void SpecularIBL::InitializeSphereTexutres()
 {
-	std::map<std::string, std::shared_ptr<Texture>> Gold;
-	std::map<std::string, std::shared_ptr<Texture>> Grass;
-	std::map<std::string, std::shared_ptr<Texture>> Plastic;
-	std::map<std::string, std::shared_ptr<Texture>> Iron;
-	std::map<std::string, std::shared_ptr<Texture>> Wall;
+	m_TextureLoader.Request(
+		[]() -> TextureMap
+		{
+			TextureMap Gold;
+			Gold["albedo"] = std::make_shared<Texture>("res/textures/PBR/Gold/albedo.png");
+			Gold["normal"] = std::make_shared<Texture>("res/textures/PBR/Gold/normal.png");
+			Gold["metallic"] = std::make_shared<Texture>("res/textures/PBR/Gold/metallic.png");
+			Gold["roughness"] = std::make_shared<Texture>("res/textures/PBR/Gold/roughness.png");
+			Gold["ao"] = std::make_shared<Texture>("res/textures/PBR/Gold/ao.png");
+			return Gold;
+		}
+	);
+	
+	m_TextureLoader.Request(
+		[]() -> TextureMap
+		{
+			TextureMap Grass;
+			Grass["albedo"] = std::make_shared<Texture>("res/textures/PBR/Grass/albedo.png");
+			Grass["normal"] = std::make_shared<Texture>("res/textures/PBR/Grass/normal.png");
+			Grass["metallic"] = std::make_shared<Texture>("res/textures/PBR/Grass/metallic.png");
+			Grass["roughness"] = std::make_shared<Texture>("res/textures/PBR/Grass/roughness.png");
+			Grass["ao"] = std::make_shared<Texture>("res/textures/PBR/Grass/ao.png");
+			return Grass;
+		}
+	);
 
-	Gold["albedo"]	= std::make_shared<Texture>("res/textures/PBR/Gold/albedo.png");
-	Gold["normal"]	= std::make_shared<Texture>("res/textures/PBR/Gold/normal.png");
-	Gold["metallic"] = std::make_shared<Texture>("res/textures/PBR/Gold/metallic.png");
-	Gold["roughness"] = std::make_shared<Texture>("res/textures/PBR/Gold/roughness.png");
-	Gold["ao"] = std::make_shared<Texture>("res/textures/PBR/Gold/ao.png");
+	m_TextureLoader.Request(
+		[]() -> TextureMap
+		{
+			TextureMap Plastic;
+			Plastic["albedo"] = std::make_shared<Texture>("res/textures/PBR/Plastic/albedo.png");
+			Plastic["normal"] = std::make_shared<Texture>("res/textures/PBR/Plastic/normal.png");
+			Plastic["metallic"] = std::make_shared<Texture>("res/textures/PBR/Plastic/metallic.png");
+			Plastic["roughness"] = std::make_shared<Texture>("res/textures/PBR/Plastic/roughness.png");
+			Plastic["ao"] = std::make_shared<Texture>("res/textures/PBR/Plastic/ao.png");
+			return Plastic;
+		}
+	);
 
-	Grass["albedo"] = std::make_shared<Texture>("res/textures/PBR/Grass/albedo.png");
-	Grass["normal"] = std::make_shared<Texture>("res/textures/PBR/Grass/normal.png");
-	Grass["metallic"] = std::make_shared<Texture>("res/textures/PBR/Grass/metallic.png");
-	Grass["roughness"] = std::make_shared<Texture>("res/textures/PBR/Grass/roughness.png");
-	Grass["ao"] = std::make_shared<Texture>("res/textures/PBR/Grass/ao.png");
+	m_TextureLoader.Request(
+		[]() -> TextureMap
+		{
+			TextureMap Iron;
+			Iron["albedo"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/albedo.png");
+			Iron["normal"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/normal.png");
+			Iron["metallic"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/metallic.png");
+			Iron["roughness"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/roughness.png");
+			Iron["ao"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/ao.png");
+			return Iron;
+		}
+	);
 
-	Plastic["albedo"] = std::make_shared<Texture>("res/textures/PBR/Plastic/albedo.png");
-	Plastic["normal"] = std::make_shared<Texture>("res/textures/PBR/Plastic/normal.png");
-	Plastic["metallic"] = std::make_shared<Texture>("res/textures/PBR/Plastic/metallic.png");
-	Plastic["roughness"] = std::make_shared<Texture>("res/textures/PBR/Plastic/roughness.png");
-	Plastic["ao"] = std::make_shared<Texture>("res/textures/PBR/Plastic/ao.png");
-
-	Iron["albedo"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/albedo.png");
-	Iron["normal"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/normal.png");
-	Iron["metallic"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/metallic.png");
-	Iron["roughness"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/roughness.png");
-	Iron["ao"] = std::make_shared<Texture>("res/textures/PBR/Rusted_Iron/ao.png");
-
-	Wall["albedo"] = std::make_shared<Texture>("res/textures/PBR/Wall/albedo.png");
-	Wall["normal"] = std::make_shared<Texture>("res/textures/PBR/Wall/normal.png");
-	Wall["metallic"] = std::make_shared<Texture>("res/textures/PBR/Wall/metallic.png");
-	Wall["roughness"] = std::make_shared<Texture>("res/textures/PBR/Wall/roughness.png");
-	Wall["ao"] = std::make_shared<Texture>("res/textures/PBR/Wall/ao.png");
-
-	m_SphereTextures.push_back(Gold);
-	m_SphereTextures.push_back(Grass);
-	m_SphereTextures.push_back(Plastic);
-	m_SphereTextures.push_back(Iron);
-	m_SphereTextures.push_back(Wall);
-
-
-	for (int i = 0; i < m_SphereTextures.size(); i++)
-	{
-		//m_SphereTextures[i].at("albedo")->SetHDR(true);
-		m_SphereTextures[i].at("albedo")->SetFlipImage(false);
-		//m_SphereTextures[i].at("albedo")->SetGammaCorrection(true);
-		m_SphereTextures[i].at("albedo")->SyncTexture();
-
-		//m_SphereTextures[i].at("normal")->SetHDR(true);
-		m_SphereTextures[i].at("normal")->SetFlipImage(false);
-		//m_SphereTextures[i].at("normal")->SetGammaCorrection(true);
-		m_SphereTextures[i].at("normal")->SyncTexture();
-		
-		//m_SphereTextures[i].at("metallic")->SetHDR(true);
-		m_SphereTextures[i].at("metallic")->SetFlipImage(false);
-		//m_SphereTextures[i].at("metallic")->SetGammaCorrection(true);
-		m_SphereTextures[i].at("metallic")->SyncTexture();
-		
-		//m_SphereTextures[i].at("roughness")->SetHDR(true);
-		m_SphereTextures[i].at("roughness")->SetFlipImage(false);
-		//m_SphereTextures[i].at("roughness")->SetGammaCorrection(true);
-		m_SphereTextures[i].at("roughness")->SyncTexture();
-		
-		//m_SphereTextures[i].at("ao")->SetHDR(true);
-		m_SphereTextures[i].at("ao")->SetFlipImage(false);
-		//m_SphereTextures[i].at("ao")->SetGammaCorrection(true);
-		m_SphereTextures[i].at("ao")->SyncTexture();
-	}
+	m_TextureLoader.Request(
+		[]() -> TextureMap
+		{
+			TextureMap Wall;
+			Wall["albedo"] = std::make_shared<Texture>("res/textures/PBR/Wall/albedo.png");
+			Wall["normal"] = std::make_shared<Texture>("res/textures/PBR/Wall/normal.png");
+			Wall["metallic"] = std::make_shared<Texture>("res/textures/PBR/Wall/metallic.png");
+			Wall["roughness"] = std::make_shared<Texture>("res/textures/PBR/Wall/roughness.png");
+			Wall["ao"] = std::make_shared<Texture>("res/textures/PBR/Wall/ao.png");
+			return Wall;
+		}
+	);
 }
 
 void SpecularIBL::RenderBasicScene()

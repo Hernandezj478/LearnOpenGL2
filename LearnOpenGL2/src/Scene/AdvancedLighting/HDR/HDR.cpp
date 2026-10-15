@@ -107,10 +107,5 @@ void HDR::Render()
 
 void HDR::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("HDR Testing", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		ImGui::SliderFloat("Exposure", &m_Exposure, 0.1f, 10.0f);
-	}
-	ImGui::End();
+	ImGui::SliderFloat("Exposure", &m_Exposure, 0.1f, 10.0f);
 }

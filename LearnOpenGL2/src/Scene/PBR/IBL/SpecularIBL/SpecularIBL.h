@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/Scene3D.h"
+#include "Core/AsyncLoader.h"
 #include <memory>
 #include <vector>
 #include <map>
@@ -26,6 +27,7 @@ public:
 	~SpecularIBL() = default;
 
 	void Render() override;
+	void Update(float deltaTime) override;
 	void OnGui() override;
 private:
 	enum SceneType
@@ -62,6 +64,9 @@ private:
 	std::unique_ptr<Cubemap> m_IrradianceCubemap;
 	std::unique_ptr<Cubemap> m_PrefilterCubemap;
 
+	AsyncLoader<std::unique_ptr<Model>> m_ModelLoader;
+	AsyncLoader<TextureMap> m_TextureLoader;
+
 	std::vector<std::pair<glm::vec3, glm::vec3>> m_LightData;
 	std::map<SceneType, std::string> m_SceneMap;
 	SceneType m_SelectedScene = BASIC;
@@ -69,6 +74,8 @@ private:
 	const int m_Cols = 7;
 	const float m_Spacing = 2.5f;
 	bool m_UseGamma = true;
+
+	std::string m_LastError = "";
 
 	void InitializeSphereTexutres();
 	void RenderBasicScene();

@@ -182,46 +182,41 @@ void Framebuffers::Render()
 
 void Framebuffers::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0f, 12.0f), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Framebuffer Testing", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
+	std::string wf = m_WireframeMode ? "ON" : "OFF";
+	std::string label = "Wireframe Mode: " + wf;
+	ImGui::Checkbox(label.c_str(), &m_WireframeMode);
+	ImGui::Separator();
+	if (ImGui::BeginCombo("Postprocess", m_PostprocessMap[m_PostprocessSelection].c_str()))
 	{
-		std::string wf = m_WireframeMode ? "ON" : "OFF";
-		std::string label = "Wireframe Mode: " + wf;
-		ImGui::Checkbox(label.c_str(), &m_WireframeMode);
-		ImGui::Separator();
-		if (ImGui::BeginCombo("Postprocess", m_PostprocessMap[m_PostprocessSelection].c_str()))
+		for (int i = 0; i < m_PostprocessMap.size(); i++)
 		{
-			for (int i = 0; i < m_PostprocessMap.size(); i++)
+			bool isSelected = (m_PostprocessSelection == i);
+			if (ImGui::Selectable(m_PostprocessMap[i].c_str(), isSelected))
 			{
-				bool isSelected = (m_PostprocessSelection == i);
-				if (ImGui::Selectable(m_PostprocessMap[i].c_str(), isSelected))
+				m_PostprocessSelection = i;
+				ChangePostProcess();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
+	ImGui::Checkbox("Apply Filter", &bFilter); 
+	if (bFilter)
+	{
+		if (ImGui::BeginCombo("Filter", KernelMap[m_KernelSelection].c_str()))
+		{
+			for (auto it : KernelMap)
+			{
+				bool isSelected = (it.first == m_KernelSelection);
+				if(ImGui::Selectable(it.second.c_str(), isSelected))
 				{
-					m_PostprocessSelection = i;
-					ChangePostProcess();
+					m_KernelSelection = it.first;
+					ChangeFilter();
 				}
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::Separator();
-		ImGui::Checkbox("Apply Filter", &bFilter); 
-		if (bFilter)
-		{
-			if (ImGui::BeginCombo("Filter", KernelMap[m_KernelSelection].c_str()))
-			{
-				for (auto it : KernelMap)
-				{
-					bool isSelected = (it.first == m_KernelSelection);
-					if(ImGui::Selectable(it.second.c_str(), isSelected))
-					{
-						m_KernelSelection = it.first;
-						ChangeFilter();
-					}
-				}
-				ImGui::EndCombo();
-			}
-		}
 	}
-	ImGui::End();
 }
 
 void Framebuffers::ChangeFilter()

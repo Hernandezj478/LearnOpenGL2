@@ -175,15 +175,10 @@ void ShadowMapping::Render()
 
 void ShadowMapping::OnGui()
 {
-	ImGui::SetNextWindowPos(ImVec2(12.0, 12.0), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Shadow Mapping", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings))
-	{
-		std::string s = m_UseOrtho ? "Orthographic" : "Perspective";
-		std::string projLabel = "Projection: " + s;
-		ImGui::Text(projLabel.c_str());
-		ImGui::Checkbox("Use Orthographic Perspective", &m_UseOrtho);
-		ImGui::Separator();
-		ImGui::Checkbox("Debug Depth Mode", &m_DebugMode);
-	}
-	ImGui::End();
+	std::string s = m_UseOrtho ? "Orthographic" : "Perspective";
+	std::string projLabel = "Projection: " + s;
+	ImGui::Text(projLabel.c_str());
+	ImGui::Checkbox("Use Orthographic Perspective", &m_UseOrtho);
+	ImGui::Separator();
+	ImGui::Checkbox("Debug Depth Mode", &m_DebugMode);
 }
