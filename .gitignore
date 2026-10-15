@@ -404,3 +404,5 @@ FodyWeavers.xsd
 *.sh
 ConfigAttachmentsASM.txt
 *.vcxproj*
+*.diagsession
+Editor_Layout.ini
