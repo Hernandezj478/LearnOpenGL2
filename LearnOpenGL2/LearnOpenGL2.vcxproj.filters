@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\VertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\HDRFrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Model\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Model\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\RenderBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Cubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\BufferObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Buffers\UniformBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\ImGuiLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\MenuUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Scene3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GLState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Welcome.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\RegisterScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\GettingStarted\GettingStarted.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\MultipleLights\MultipleLights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\LightMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\Colors\Colors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\BasicLighting\BasicLighting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\Materials\Materials.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\LightingMaps\LightingMaps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\Lighting\LightCasters\LightCasters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\ModelLoading\ModelLoading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\RenderTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\DepthTesting\DepthTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\StencilTesting\StencilTesting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Blending\Blending.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\FaceCulling\FaceCulling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Framebuffers\Framebuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\PostprocessFilters\PostprocessFilters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Cubemaps\Cubemaps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\AdvancedGLSL\AdvancedGLSL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Geometry Shader\GeometryShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Instancing\Instancing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedOpenGL\AntiAliasing\AntiAliasing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\AdvancedLighting\AdvancedLighting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\GammaCorrection\GammaCorrection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\Shadows\PointShadow\PointShadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\NormalMapping\NormalMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\ParallaxMapping\ParallaxMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\HDR\HDR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\Bloom\Bloom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\DeferredShading\DeferredShading.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\AdvancedLighting\SSAO\SSAO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\PBR\Lighting\PBRLighting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\PBR\IBL\DiffuseIrradiance\DiffuseIrradiance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\PBR\IBL\SpecularIBL\SpecularIBL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\UILayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\TextRendering\TextRendering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stb_image_implementation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Shapes\Glyph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\TextRendering\TextRenderingNew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_stdlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Graphics\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\VertexBufferLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\MaterialLibrary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\HDRFrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Model\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Model\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ModelLoading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\RenderBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ColorPalette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\PostprocessFilters\PostprocessFilters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\BufferObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Buffers\UniformBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\ImGuiLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\MenuUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Scene3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GLState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Welcome.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\RegisterScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\GettingStarted\GettingStarted.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\MultipleLights\MultipleLights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\LightMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\Colors\Colors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\BasicLighting\BasicLighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\Materials\Materials.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\LightingMaps\LightingMaps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\Lighting\LightCasters\LightCasters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\ModelLoading\ModelLoading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\AsyncLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\RenderTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\DepthTesting\DepthTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\StencilTesting\StencilTesting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Blending\Blending.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\FaceCulling\FaceCulling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Framebuffers\Framebuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Cubemaps\Cubemaps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\AdvancedGLSL\AdvancedGLSL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Geometry Shader\GeometryShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Instancing\Instancing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedOpenGL\AntiAliasing\AntiAliasing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\AdvancedLighting\AdvancedLighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\GammaCorrection\GammaCorrection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\Shadows\PointShadow\PointShadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\NormalMapping\NormalMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\ParallaxMapping\ParallaxMapping.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\HDR\HDR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\Bloom\Bloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\DeferredShading\DeferredShading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\AdvancedLighting\SSAO\SSAO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\UILayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\PBR\Lighting\PBRLighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\PBR\IBL\DiffuseIrradiance\DiffuseIrradiance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\PBR\IBL\SpecularIBL\SpecularIBL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\TextRendering\TextRendering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Shapes\Glyph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\TextRendering\TextRenderingNew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_stdlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common\Fonts_Enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\SimpleInstance.shader" />
+    <None Include="res\shaders\Instance.shader" />
+    <None Include="res\shaders\Asteroid.shader" />
+    <None Include="res\shaders\Planet.shader" />
+    <None Include="res\shaders\GreenCube.shader" />
+    <None Include="res\shaders\AdvancedOpenGL\AntiAliasing\BaseShader.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AntiAliasing\AntiAliasing.glsl" />
+    <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\AdvancedLighting\GammaCorrection\GammaCorrection.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\ShadowMappingDepth.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\DebugQuad.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.glsl" />
+    <None Include="res\shaders\DebugPlane.shader" />
+    <None Include="res\shaders\BetterBloom.shader" />
+    <None Include="res\shaders\Lightbox.shader" />
+    <None Include="res\shaders\BlurBloom.shader" />
+    <None Include="res\shaders\BloomFinal.shader" />
+    <None Include="res\shaders\GBuffer.shader" />
+    <None Include="res\shaders\DeferredShading.shader" />
+    <None Include="res\shaders\DeferredLightbox.shader" />
+    <None Include="res\shaders\SSAO_Geometry.shader" />
+    <None Include="res\shaders\SSAO_Lighting.shader" />
+    <None Include="res\shaders\SSAO.shader" />
+    <None Include="res\shaders\SSAO_Blur.shader" />
+    <None Include="res\shaders\PBR.shader" />
+    <None Include="res\shaders\PBR_Texture.shader" />
+    <None Include="res\shaders\PBR_DI.shader" />
+    <None Include="res\shaders\EquirectangularToCubemap_DI.shader" />
+    <None Include="res\shaders\Irradiance_DI.shader" />
+    <None Include="res\shaders\Background_DI.shader" />
+    <None Include="res\shaders\PBR_S.shader" />
+    <None Include="res\shaders\EquirectangularToCubemap_S.shader" />
+    <None Include="res\shaders\IrradianceConvolution_S.shader" />
+    <None Include="res\shaders\Prefilter_S.shader" />
+    <None Include="res\shaders\BRDF_S.shader" />
+    <None Include="res\shaders\Background_S.shader" />
+    <None Include="res\shaders\Lighting\Color.glsl" />
+    <None Include="res\shaders\Lighting\BasicLighting.glsl" />
+    <None Include="res\shaders\Lighting\Materials.glsl" />
+    <None Include="res\shaders\Lighting\LightingMaps.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\LightCasters.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\DirectionalLight.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\Pointlight.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\Spotlight.glsl" />
+    <None Include="res\shaders\ModelLoading\ModelLoading.glsl" />
+    <None Include="res\shaders\Lighting\LightSource.glsl" />
+    <None Include="res\shaders\Lighting\MultiLights.glsl" />
+    <None Include="res\shaders\GridLine\Line.glsl" />
+    <None Include="res\shaders\GettingStarted\Basic.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\DepthTest\DepthTest.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\StencilTest\SingleColor.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Blending\Blending.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\FaceCulling\FaceCulling.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Framebuffer.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\FramebufferScreen.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Invert.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Greyscale.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Kernel.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Skybox.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Reflection.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Refraction.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Blue.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Green.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Red.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Yellow.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\PointSize.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\FragCoord.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Colors.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\FrontFacing.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\Default.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\NormalVisualization.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\PrimativePoints.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\HouseGeometryShader.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\PlanePoints.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\ExplodeModel.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\Instancing.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\Skybox.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\ColorPlane.glsl" />
+    <None Include="res\shaders\AdvancedLighting\AdvancedLighting\AdvancedLighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\PointShadow\PointShadow.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\PointShadow\DepthMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\NormalMapping\NormalMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\ParallaxMapping\ParallaxMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\HDR\Lighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\HDR\HDR.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Lighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Blur.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Bloom.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\PositionColor.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\GBufferTest.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\LightingPass.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\LightingTest.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\GeometryPass.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO_ViewTest.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO_Blur.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\LightingPass.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRLighting.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRTexture.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRModel.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\PBRDiffuse.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\EquiRectMap.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\SimpleSkybox.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\CubemapConvolution.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\PrefilterSpecular.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\BRDF.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLDiffuse.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLTextured.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLModel.glsl" />
+    <None Include="res\shaders\TextRendering\TextRendering.glsl" />
+    <None Include="res\shaders\TextRenderer\TextRenderer.glsl" />
+  </ItemGroup>
+</Project>

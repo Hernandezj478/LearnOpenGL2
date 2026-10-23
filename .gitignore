@@ -401,8 +401,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 .idea/
-*.sh
 ConfigAttachmentsASM.txt
-*.vcxproj*
 *.diagsession
 Editor_Layout.ini

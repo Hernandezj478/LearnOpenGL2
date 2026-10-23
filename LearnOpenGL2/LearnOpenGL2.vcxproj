@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{f3dd9b1c-650a-4cb1-83a2-e5ca22fa4396}</ProjectGuid>
+    <RootNamespace>LearnOpenGL2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor\assimp\libs\LIB;H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor\assimp\libs\DLL;H:\Random\LearnOpenGL2\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>H:\Random\LearnOpenGL2\Dependencies\include;$(ProjectDir)LearnOpenGL2\src\vendor;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor;H:\Random\LearnOpenGL2\LearnOpenGL2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;Shell32.lib;freetype.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Graphics\Font.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Glyph.cpp" />
+    <ClCompile Include="src\Graphics\TextRenderer.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Scene\TextRendering\TextRenderingNew.cpp" />
+    <ClCompile Include="src\stb_image_implementation.cpp" />
+    <ClCompile Include="src\Core\Application.cpp" />
+    <ClCompile Include="src\Core\Input.cpp" />
+    <ClCompile Include="src\Graphics\GLState.cpp" />
+    <ClCompile Include="src\Graphics\LightMarker.cpp" />
+    <ClCompile Include="src\Graphics\PostprocessFilters\PostprocessFilters.cpp" />
+    <ClCompile Include="src\Graphics\RenderTexture.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Skybox.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Sphere.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\BufferObject.cpp" />
+    <ClCompile Include="src\Graphics\Camera.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Cube.cpp" />
+    <ClCompile Include="src\Graphics\Cubemap.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\FrameBuffer.cpp" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\Graphics\Buffers\HDRFrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\IndexBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Grid.cpp" />
+    <ClCompile Include="src\Graphics\Model\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Model\Model.cpp" />
+    <ClCompile Include="src\Graphics\Shapes\Plane.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\RenderBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Renderer.cpp" />
+    <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\AdvancedLighting\AdvancedLighting.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\Bloom\Bloom.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\DeferredShading\DeferredShading.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\GammaCorrection\GammaCorrection.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\HDR\HDR.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\NormalMapping\NormalMapping.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\ParallaxMapping\ParallaxMapping.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\Shadows\PointShadow\PointShadow.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.cpp" />
+    <ClCompile Include="src\Scene\AdvancedLighting\SSAO\SSAO.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\AdvancedGLSL\AdvancedGLSL.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\AntiAliasing\AntiAliasing.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Blending\Blending.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Cubemaps\Cubemaps.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\DepthTesting\DepthTesting.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\FaceCulling\FaceCulling.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Framebuffers\Framebuffers.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Geometry Shader\GeometryShader.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\Instancing\Instancing.cpp" />
+    <ClCompile Include="src\Scene\AdvancedOpenGL\StencilTesting\StencilTesting.cpp" />
+    <ClCompile Include="src\Scene\GettingStarted\GettingStarted.cpp" />
+    <ClCompile Include="src\Scene\Lighting\BasicLighting\BasicLighting.cpp" />
+    <ClCompile Include="src\Scene\Lighting\Colors\Colors.cpp" />
+    <ClCompile Include="src\Scene\Lighting\LightCasters\LightCasters.cpp" />
+    <ClCompile Include="src\Scene\Lighting\LightingMaps\LightingMaps.cpp" />
+    <ClCompile Include="src\Scene\Lighting\Materials\Materials.cpp" />
+    <ClCompile Include="src\Scene\Lighting\MultipleLights\MultipleLights.cpp" />
+    <ClCompile Include="src\Scene\ModelLoading\ModelLoading.cpp" />
+    <ClCompile Include="src\Scene\PBR\IBL\DiffuseIrradiance\DiffuseIrradiance.cpp" />
+    <ClCompile Include="src\Scene\PBR\IBL\SpecularIBL\SpecularIBL.cpp" />
+    <ClCompile Include="src\Scene\PBR\Lighting\PBRLighting.cpp" />
+    <ClCompile Include="src\Scene\RegisterScene.cpp" />
+    <ClCompile Include="src\Scene\Scene3D.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
+    <ClCompile Include="src\Scene\SceneRegistry.cpp" />
+    <ClCompile Include="src\Scene\TextRendering\TextRendering.cpp" />
+    <ClCompile Include="src\Scene\Welcome.cpp" />
+    <ClCompile Include="src\Graphics\Texture.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\UniformBuffer.cpp" />
+    <ClCompile Include="src\UI\ImGuiLayer.cpp" />
+    <ClCompile Include="src\UI\MenuUI.cpp" />
+    <ClCompile Include="src\UI\UILayer.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\VertexArray.cpp" />
+    <ClCompile Include="src\Graphics\Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="src\Core\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Common\Fonts_Enum.h" />
+    <ClInclude Include="src\Core\Application.h" />
+    <ClInclude Include="src\Core\AsyncLoader.h" />
+    <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Graphics\Font.h" />
+    <ClInclude Include="src\Graphics\GLState.h" />
+    <ClInclude Include="src\Graphics\LightMarker.h" />
+    <ClInclude Include="src\Graphics\RenderTexture.h" />
+    <ClInclude Include="src\Graphics\Shapes\Glyph.h" />
+    <ClInclude Include="src\Graphics\Shapes\Skybox.h" />
+    <ClInclude Include="src\Graphics\Shapes\Sphere.h" />
+    <ClInclude Include="src\Graphics\Buffers\BufferObject.h" />
+    <ClInclude Include="src\Graphics\Camera.h" />
+    <ClInclude Include="src\Graphics\ColorPalette.h" />
+    <ClInclude Include="src\Graphics\Shapes\Cube.h" />
+    <ClInclude Include="src\Graphics\Cubemap.h" />
+    <ClInclude Include="src\Common\Enums.h" />
+    <ClInclude Include="src\Graphics\Buffers\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\Buffers\HDRFrameBuffer.h" />
+    <ClInclude Include="src\Graphics\Buffers\IndexBuffer.h" />
+    <ClInclude Include="src\Graphics\Shapes\Grid.h" />
+    <ClInclude Include="src\Common\Logger.h" />
+    <ClInclude Include="src\Graphics\MaterialLibrary.h" />
+    <ClInclude Include="src\Graphics\Model\Mesh.h" />
+    <ClInclude Include="src\Graphics\Model\Model.h" />
+    <ClInclude Include="src\Graphics\TextRenderer.h" />
+    <ClInclude Include="src\ModelLoading.h" />
+    <ClInclude Include="src\Graphics\Shapes\Plane.h" />
+    <ClInclude Include="src\Graphics\PostprocessFilters\PostprocessFilters.h" />
+    <ClInclude Include="src\Graphics\Buffers\RenderBuffer.h" />
+    <ClInclude Include="src\Graphics\Renderer.h" />
+    <ClInclude Include="src\Graphics\Shader.h" />
+    <ClInclude Include="src\Graphics\Texture.h" />
+    <ClInclude Include="src\Graphics\Buffers\UniformBuffer.h" />
+    <ClInclude Include="src\Common\Vector.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\AdvancedLighting\AdvancedLighting.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\Bloom\Bloom.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\DeferredShading\DeferredShading.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\GammaCorrection\GammaCorrection.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\HDR\HDR.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\NormalMapping\NormalMapping.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\ParallaxMapping\ParallaxMapping.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\Shadows\PointShadow\PointShadow.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.h" />
+    <ClInclude Include="src\Scene\AdvancedLighting\SSAO\SSAO.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\AdvancedGLSL\AdvancedGLSL.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\AntiAliasing\AntiAliasing.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Blending\Blending.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Cubemaps\Cubemaps.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\DepthTesting\DepthTesting.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\FaceCulling\FaceCulling.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Framebuffers\Framebuffers.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Geometry Shader\GeometryShader.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\Instancing\Instancing.h" />
+    <ClInclude Include="src\Scene\AdvancedOpenGL\StencilTesting\StencilTesting.h" />
+    <ClInclude Include="src\Scene\GettingStarted\GettingStarted.h" />
+    <ClInclude Include="src\Scene\Lighting\BasicLighting\BasicLighting.h" />
+    <ClInclude Include="src\Scene\Lighting\Colors\Colors.h" />
+    <ClInclude Include="src\Scene\Lighting\LightCasters\LightCasters.h" />
+    <ClInclude Include="src\Scene\Lighting\LightingMaps\LightingMaps.h" />
+    <ClInclude Include="src\Scene\Lighting\Materials\Materials.h" />
+    <ClInclude Include="src\Scene\Lighting\MultipleLights\MultipleLights.h" />
+    <ClInclude Include="src\Scene\ModelLoading\ModelLoading.h" />
+    <ClInclude Include="src\Scene\PBR\IBL\DiffuseIrradiance\DiffuseIrradiance.h" />
+    <ClInclude Include="src\Scene\PBR\IBL\SpecularIBL\SpecularIBL.h" />
+    <ClInclude Include="src\Scene\PBR\Lighting\PBRLighting.h" />
+    <ClInclude Include="src\Scene\RegisterScene.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\Scene3D.h" />
+    <ClInclude Include="src\Scene\SceneContext.h" />
+    <ClInclude Include="src\Scene\SceneManager.h" />
+    <ClInclude Include="src\Scene\SceneRegistry.h" />
+    <ClInclude Include="src\Scene\TextRendering\TextRendering.h" />
+    <ClInclude Include="src\Scene\TextRendering\TextRenderingNew.h" />
+    <ClInclude Include="src\Scene\Welcome.h" />
+    <ClInclude Include="src\UI\ImGuiLayer.h" />
+    <ClInclude Include="src\UI\MenuUI.h" />
+    <ClInclude Include="src\UI\UILayer.h" />
+    <ClInclude Include="src\vendor\imgui\imconfig.h" />
+    <ClInclude Include="src\vendor\imgui\imgui.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_stdlib.h" />
+    <ClInclude Include="src\Graphics\Vertex.h" />
+    <ClInclude Include="src\Graphics\Buffers\VertexArray.h" />
+    <ClInclude Include="src\Graphics\Buffers\VertexBuffer.h" />
+    <ClInclude Include="src\Graphics\Buffers\VertexBufferLayout.h" />
+    <ClInclude Include="src\Core\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\AdvancedLighting\AdvancedLighting\AdvancedLighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Bloom.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Blur.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Bloom\Lighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\GBufferTest.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\LightingPass.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\LightingTest.glsl" />
+    <None Include="res\shaders\AdvancedLighting\DeferredShading\PositionColor.glsl" />
+    <None Include="res\shaders\AdvancedLighting\HDR\HDR.glsl" />
+    <None Include="res\shaders\AdvancedLighting\HDR\Lighting.glsl" />
+    <None Include="res\shaders\AdvancedLighting\NormalMapping\NormalMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\ParallaxMapping\ParallaxMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\PointShadow\DepthMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\PointShadow\PointShadow.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\GeometryPass.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\LightingPass.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO_Blur.glsl" />
+    <None Include="res\shaders\AdvancedLighting\SSAO\SSAO_ViewTest.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\FragCoord.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\FrontFacing.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\PointSize.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Blue.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Colors.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Green.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Red.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AdvancedGLSL\UB_Yellow.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Blending\Blending.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Reflection.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Refraction.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Cubemap\Skybox.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\DepthTest\DepthTest.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\FaceCulling\FaceCulling.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Framebuffer.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\FramebufferScreen.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Greyscale.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Invert.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Framebuffer\Kernel.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\Default.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\ExplodeModel.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\HouseGeometryShader.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\NormalVisualization.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\PlanePoints.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\GeometryShader\PrimativePoints.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\ColorPlane.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\Instancing.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\Instancing\Skybox.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\StencilTest\SingleColor.glsl" />
+    <None Include="res\shaders\Background_DI.shader" />
+    <None Include="res\shaders\Background_S.shader" />
+    <None Include="res\shaders\BRDF_S.shader" />
+    <None Include="res\shaders\EquirectangularToCubemap_DI.shader" />
+    <None Include="res\shaders\EquirectangularToCubemap_S.shader" />
+    <None Include="res\shaders\GettingStarted\Basic.glsl" />
+    <None Include="res\shaders\GridLine\Line.glsl" />
+    <None Include="res\shaders\IrradianceConvolution_S.shader" />
+    <None Include="res\shaders\Irradiance_DI.shader" />
+    <None Include="res\shaders\AdvancedOpenGL\AntiAliasing\BaseShader.glsl" />
+    <None Include="res\shaders\AdvancedOpenGL\AntiAliasing\AntiAliasing.glsl" />
+    <None Include="res\shaders\Asteroid.shader" />
+    <None Include="res\shaders\BetterBloom.shader" />
+    <None Include="res\shaders\BlinnPhong.shader" />
+    <None Include="res\shaders\BloomFinal.shader" />
+    <None Include="res\shaders\BlurBloom.shader" />
+    <None Include="res\shaders\DebugPlane.shader" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\DebugQuad.glsl" />
+    <None Include="res\shaders\DeferredLightbox.shader" />
+    <None Include="res\shaders\DeferredShading.shader" />
+    <None Include="res\shaders\AdvancedLighting\GammaCorrection\GammaCorrection.glsl" />
+    <None Include="res\shaders\GBuffer.shader" />
+    <None Include="res\shaders\GreenCube.shader" />
+    <None Include="res\shaders\Instance.shader" />
+    <None Include="res\shaders\Lightbox.shader" />
+    <None Include="res\shaders\Lighting\BasicLighting.glsl" />
+    <None Include="res\shaders\Lighting\Color.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\DirectionalLight.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\LightCasters.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\Pointlight.glsl" />
+    <None Include="res\shaders\Lighting\LightCasters\Spotlight.glsl" />
+    <None Include="res\shaders\Lighting\LightingMaps.glsl" />
+    <None Include="res\shaders\Lighting\LightSource.glsl" />
+    <None Include="res\shaders\Lighting\Materials.glsl" />
+    <None Include="res\shaders\Lighting\MultiLights.glsl" />
+    <None Include="res\shaders\ModelLoading\ModelLoading.glsl" />
+    <None Include="res\shaders\PBR.shader" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\CubemapConvolution.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\PBRDiffuse.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\EquiRectMap.glsl" />
+    <None Include="res\shaders\PBR\IBL\DiffuseIrradiance\SimpleSkybox.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\BRDF.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLDiffuse.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLModel.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\IBLTextured.glsl" />
+    <None Include="res\shaders\PBR\IBL\SpecularIBL\PrefilterSpecular.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRLighting.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRModel.glsl" />
+    <None Include="res\shaders\PBR\Lighting\PBRTexture.glsl" />
+    <None Include="res\shaders\PBR_DI.shader" />
+    <None Include="res\shaders\PBR_S.shader" />
+    <None Include="res\shaders\PBR_Texture.shader" />
+    <None Include="res\shaders\Planet.shader" />
+    <None Include="res\shaders\Prefilter_S.shader" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\ShadowMapping.glsl" />
+    <None Include="res\shaders\AdvancedLighting\Shadows\ShadowMapping\ShadowMappingDepth.glsl" />
+    <None Include="res\shaders\SimpleInstance.shader" />
+    <None Include="res\shaders\SSAO.shader" />
+    <None Include="res\shaders\SSAO_Blur.shader" />
+    <None Include="res\shaders\SSAO_Geometry.shader" />
+    <None Include="res\shaders\SSAO_Lighting.shader" />
+    <None Include="res\shaders\TextRenderer\TextRenderer.glsl" />
+    <None Include="res\shaders\TextRendering\TextRendering.glsl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
