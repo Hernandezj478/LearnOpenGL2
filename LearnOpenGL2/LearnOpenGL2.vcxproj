@@ -71,8 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor\assimp\libs\LIB;H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor\assimp\libs\DLL;H:\Random\LearnOpenGL2\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)LearnOpenGL2\src\vendor\assimp\libs\LIB;$(ProjectDir)LearnOpenGL2\src\vendor\assimp\libs\DLL;$(ProjectDir)LearnOpenGL2\Dependencies\lib</LibraryPath>
     <IncludePath>H:\Random\LearnOpenGL2\Dependencies\include;$(ProjectDir)LearnOpenGL2\src\vendor;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>H:\Random\LearnOpenGL2\Dependencies\include;$(ProjectDir)src\vendor;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)src\vendor\assimp\libs\LIB;$(ProjectDir)src\vendor\assimp\libs\DLL;H:\Random\LearnOpenGL2\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -123,11 +128,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>H:\Random\LearnOpenGL2\LearnOpenGL2\src\vendor;H:\Random\LearnOpenGL2\LearnOpenGL2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>assimp-vc143-mt.lib;glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;Shell32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "$(ProjectDir)src\vendor\assimp\libs\DLL\assimp-vc143-mt.dll" "$(OutDir)"
+xcopy /E /I /Y /D "$(ProjectDir)res\textures" "$(OutDir)res\textures"
+xcopy /E /I /Y /D "$(ProjectDir)res\shaders" "$(OutDir)res\shaders"
+xcopy /E /I /Y /D "$(ProjectDir)res\meshes" "$(OutDir)res\meshes"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\Font.cpp" />
