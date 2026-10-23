@@ -77,7 +77,7 @@ void Skybox::GenerateVertices()
 		}
 	}
 
-	m_VBO = std::make_unique<VertexBuffer>(m_Vertices.data(), m_Vertices.size() * sizeof(glm::vec3));
+	m_VBO = std::make_unique<VertexBuffer>(m_Vertices.data(), m_Vertices.size() * sizeof(glm::vec3), GL_STATIC_DRAW);
 	m_Layout = std::make_unique<VertexBufferLayout>();
 	m_Layout->Push<float>(3);
 

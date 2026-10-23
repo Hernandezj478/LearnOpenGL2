@@ -64,6 +64,15 @@ public:
 	}
 
 	template<>
+	void Push<glm::vec4>(unsigned int count, unsigned int divisor)
+	{
+		for (unsigned int i = 0; i < count; i++)
+		{
+			Push<float>(4, divisor);
+		}
+	}
+
+	template<>
 	void Push<glm::mat4>(unsigned int count, unsigned int divisor) 
 	{
 		for (int i = 0; i < 4; i++) 

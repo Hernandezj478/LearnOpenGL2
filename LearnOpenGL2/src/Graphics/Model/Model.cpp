@@ -64,7 +64,7 @@ unsigned int Model::GetMeshIndexSize(unsigned int index)
 void Model::CreateInstance(std::vector<glm::mat4> modelMatrices)
 {
 	m_InstanceCount = modelMatrices.size();
-	m_InstanceBuffer = std::make_unique<VertexBuffer>(modelMatrices.data(), modelMatrices.size() * sizeof(glm::mat4));
+	m_InstanceBuffer = std::make_unique<VertexBuffer>(modelMatrices.data(), modelMatrices.size() * sizeof(glm::mat4), GL_STATIC_DRAW);
 	for (unsigned int i = 0; i < GetNumberOfMeshes(); i++)
 	{
 		BindMeshAtIndex(i);

@@ -6,7 +6,7 @@
 class RenderTexture
 {
 public:
-	explicit RenderTexture(int width, int height, unsigned int bufferCount = 1);
+	explicit RenderTexture(unsigned int width,unsigned int height, unsigned int bufferCount = 1);
 	~RenderTexture();
 
 	/*
@@ -18,15 +18,6 @@ public:
 	void CreateTextureBuffer(GLint internalFormat, GLenum format = GL_RGB, GLenum type = GL_UNSIGNED_INT, const void* data = NULL);
 	void AddTextureData(GLenum format, GLenum type, const void* data);
 
-	// TODO: Remove old functions, no longer needed
-	/*void CreateColorBufferMSAA(int samples, GLenum internalFormat = GL_RGB);
-	void CreateColorbufferHDR(GLint internalFormat = GL_RGBA16F, WrapType uvWrap = ECLAMP, GLenum filter = GL_LINEAR);
-	void CreateLUTBuffer(GLint internalFormat, GLenum format, GLenum type);
-	void CreateColorbuffer(GLenum internalFormat = GL_RGB);
-	void CreateDepthbuffer(int screenWidth, int screenHeight);
-	void CreateDepthbufferTexture(int screenWidth, int screenHeight, WrapType uvWrap = REPEAT, GLenum filter = GL_NEAREST);
-	void CreateStencilbuffer(int screenWidth, int screenHeight);
-	void CreteDepthStencilbuffer(int screenWidth, int screenHeight);*/
 	void CreateBorder(glm::vec4 color);
 
 	void Bind(unsigned int slot = 0, unsigned int index = 0) const;

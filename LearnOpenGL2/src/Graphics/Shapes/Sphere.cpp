@@ -49,7 +49,7 @@ Sphere::Sphere()
 		}
 		oddRow = !oddRow;
 	}
-	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex));
+	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex), GL_STATIC_DRAW);
 	m_Layout = std::make_unique<VertexBufferLayout>();
 	m_Layout->Push<float>(3);	// Position
 	m_Layout->Push<float>(2);	// Texture

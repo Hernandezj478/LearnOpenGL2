@@ -74,7 +74,7 @@ void Plane::GenerateVertices()
 		Indices.push_back(i2);
 	}
 
-	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex));
+	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex), GL_STATIC_DRAW);
 	m_Layout = std::make_unique<VertexBufferLayout>();
 	m_Layout->Push<float>(3);	// Position
 	m_Layout->Push<float>(2);	// TexCoord
@@ -103,7 +103,7 @@ void Plane::DrawPoints(Shader& shader, const Renderer& renderer)
 void Plane::CreateInstance(std::vector<glm::mat4> transforms)
 {
 	m_InstanceCount = transforms.size();
-	m_InstanceBuffer = std::make_unique<VertexBuffer>(transforms.data(), transforms.size() * sizeof(glm::mat4));
+	m_InstanceBuffer = std::make_unique<VertexBuffer>(transforms.data(), transforms.size() * sizeof(glm::mat4), GL_STATIC_DRAW);
 	m_VAO->Bind();
 	VertexBufferLayout layout;
 	layout.Push<glm::mat4>(0, 1);
@@ -154,7 +154,7 @@ void Plane2D::GenerateVertices()
 		Indices.push_back(indices[i]);
 	}
 	
-	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex2D));
+	m_VBO = std::make_unique<VertexBuffer>(Vertices.data(), Vertices.size() * sizeof(Vertex2D), GL_STATIC_DRAW);
 	m_Layout = std::make_unique<VertexBufferLayout>();
 	m_Layout->Push<float>(2);	// Position
 	m_Layout->Push<float>(2);	// TexCoord

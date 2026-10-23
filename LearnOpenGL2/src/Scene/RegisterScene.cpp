@@ -41,6 +41,9 @@
 #include "PBR/IBL/DiffuseIrradiance/DiffuseIrradiance.h"
 #include "PBR/IBL/SpecularIBL/SpecularIBL.h"
 
+#include "TextRendering/TextRendering.h"
+#include "TextRendering/TextRenderingNew.h"
+
 void RegisterScenes(SceneRegistry& Registry)
 {
 	Registry.RegisterHome<WelcomeScene>();
@@ -75,5 +78,6 @@ void RegisterScenes(SceneRegistry& Registry)
 	Registry.Register<PBRLighting>("PBR", "Lighting", "");
 	Registry.Register<DiffuseIrradiance>("PBR", "Diffuse Irradiance", "");
 	Registry.Register<SpecularIBL>("PBR", "Specular IBL", "");
-
+	Registry.Register<TextRendering>("Text Rendering", "Text Rendering");
+	Registry.Register<TextRenderingNew>("Text Rendering", "Text Rendering Class");
 }

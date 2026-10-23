@@ -7,7 +7,7 @@
 
 constexpr int X_SEGMENTS = 64;
 constexpr int Y_SEGMENTS = 64;
-constexpr float PI = 3.14159265359;
+constexpr double PI = 3.14159265359;
 
 class VertexArray;
 class VertexBuffer;

@@ -41,31 +41,6 @@ private:
 
 };
 
-// NOTE: PlaneTBN is temporary to just follow along with Learn OpenGL tutorial
-//class PlaneTBN
-//{
-//private:
-//
-//	std::vector<VertexTBN> Vertices;
-//	std::vector<unsigned int> Indices;
-//
-//	VertexArray m_VAO;
-//	VertexBuffer m_VBO;
-//	VertexBufferLayout m_Layout;
-//	IndexBuffer m_EBO;
-//
-//	float m_UVTileScale = 1.0f;
-//
-//	void GenerateVertices();
-//	void GenerateQuad();
-//public:
-//	PlaneTBN();
-//	PlaneTBN(float uvTiling);
-//	~PlaneTBN();
-//
-//	void Draw(Shader& shader, const Renderer& renderer);
-//};
-
 class Plane2D
 {
 public:

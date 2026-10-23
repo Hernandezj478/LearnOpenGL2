@@ -40,12 +40,12 @@ public:
 	unsigned int GetRendererID(unsigned int index = 0) const;
 	bool IsUploaded() const { return m_Uploaded; }
 private:
-	bool m_GammaCorrection;
-	bool m_FlipImage;
-	bool m_InvertGChannel;
-	bool m_Uploaded;
-	bool m_HDR;
-	unsigned int m_RendererID;
+	bool m_GammaCorrection = false;
+	bool m_FlipImage = false;
+	bool m_InvertGChannel = false;
+	bool m_Uploaded = false;
+	bool m_HDR = false;
+	unsigned int m_RendererID = 0;
 	unsigned char* m_LocalBuffer = nullptr;
 	float* m_HDRBuffer = nullptr;
 	int m_Width, m_Height, m_nrChannels;

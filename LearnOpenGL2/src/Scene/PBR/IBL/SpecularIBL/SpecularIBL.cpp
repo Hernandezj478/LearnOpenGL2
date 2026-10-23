@@ -30,7 +30,6 @@ SpecularIBL::SpecularIBL(const SceneContext& context) : Scene3D(context)
 	m_Light = std::make_unique<LightMarker>();
 	m_Skybox = std::make_unique<Skybox>();
 	m_ScreenQuad = std::make_unique<Plane2D>();
-
 	m_ModelLoader.Request(
 		[]() -> std::unique_ptr<Model>
 		{

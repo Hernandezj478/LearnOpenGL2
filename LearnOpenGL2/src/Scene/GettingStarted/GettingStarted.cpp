@@ -1,5 +1,4 @@
 #include "GettingStarted.h"
-#include "stb_image.h"
 
 #include "Core/Window.h"
 

@@ -47,7 +47,7 @@ void VertexArray::AddInstancedBuffer(const VertexBuffer& vertexBuffer, const Ver
 
 		glEnableVertexAttribArray(location);
 		glVertexAttribPointer(location, element.count, element.type, element.normalized, stride, (void*)offset);
-		offset += sizeof(glm::vec4);
+		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 		
 		glVertexAttribDivisor(location, element.divisor);
 	}

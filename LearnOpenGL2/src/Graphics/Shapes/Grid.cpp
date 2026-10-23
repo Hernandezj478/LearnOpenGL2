@@ -32,7 +32,7 @@ void Grid::SetupGrid()
 		});
 	}
 
-	m_VBO = std::make_unique<VertexBuffer>(m_GridLines.data(), m_GridLines.size() * sizeof(Line));
+	m_VBO = std::make_unique<VertexBuffer>(m_GridLines.data(), m_GridLines.size() * sizeof(Line), GL_STATIC_DRAW);
 	m_Layout = std::make_unique<VertexBufferLayout>();
 	m_Layout->Push<float>(3);
 	m_VAO = std::make_unique<VertexArray>();
